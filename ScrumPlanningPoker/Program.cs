@@ -33,5 +33,6 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.MapHub<TestHub>("/testhub");
+app.MapHub<ClientsHub>("/clienthub");
 
 app.Run();

@@ -20,7 +20,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -32,7 +31,9 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+// SignalR
 app.MapHub<TestHub>("/testhub");
 app.MapHub<ClientsHub>("/clienthub");
+app.MapHub<RoomHub>("/roomhub");
 
 app.Run();

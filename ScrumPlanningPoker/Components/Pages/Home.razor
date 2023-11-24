@@ -20,7 +20,7 @@
         <input @bind="messageInput" size="50" />
     </label>
 </div>
-<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+<button @onclick="Send" disabled="@(!IsConnected)">Send TEST</button>
 
 <hr>
 
@@ -33,7 +33,7 @@
 
 @code {
     private HubConnection? hubConnection;
-    private List<string> messages = new List<string>();
+    private List<string> messages = new();
     private string? userInput;
     private string? messageInput;
 

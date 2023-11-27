@@ -1,73 +1,55 @@
-﻿@page "/Test"
-@attribute [RenderModeInteractiveServer]
+﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client
-@inject NavigationManager Navigation
+@attribute [RenderModeInteractiveServer(false)]
+@inject NavigationManager NavigationManager
 @implements IAsyncDisposable
 
-<PageTitle>Home</PageTitle>
+<h2>Create a New Room</h2>
 
-<h2>Clients</h2>
+<button @onclick="Create">Créer une Room</button>
 
-<div class="form-group">
-    <label>
-        User:
-        <input @bind="userInput" />
-    </label>
-</div>
-<div class="form-group">
-    <label>
-        Message:
-        <input @bind="messageInput" size="50" />
-    </label>
-</div>
-<button @onclick="Send" disabled="@(!IsConnected)">Send TEST</button>
-
-<hr>
-
-<ul id="messagesList">
-    @foreach (var message in messages)
-    {
-        <li>@message</li>
-    }
-</ul>
+@if (!string.IsNullOrEmpty(roomLink))
+{
+    <p>Room Link: <a href="@roomLink">Lien de la room</a></p>
+}
 
 @code {
+    private string roomLink;
     private HubConnection? hubConnection;
-    private List<string> messages = new();
-    private string? userInput;
-    private string? messageInput;
-
+    
     protected override async Task OnInitializedAsync()
     {
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/testhub"))
-            .Build();
-
-        hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        if (hubConnection == null)
         {
-            var encodedMsg = $"{user}: {message}";
-            messages.Add(encodedMsg);
-            InvokeAsync(StateHasChanged);
-        });
-
-        await hubConnection.StartAsync();
-    }
-
-    private async Task Send()
-    {
-        if (hubConnection is not null)
-        {
-            await hubConnection.SendAsync("SendMessage", userInput, messageInput);
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl(NavigationManager.ToAbsoluteUri("/session-room-hub"))
+                .Build();
+            
+            await hubConnection.StartAsync();
         }
     }
 
-    public bool IsConnected =>
-        hubConnection?.State == HubConnectionState.Connected;
+    private async void Create()
+    {
+        var roomName = GenerateUniqueRoomName();
+        roomLink = NavigationManager.BaseUri + $"room/{roomName}";
 
+        if (hubConnection?.State == HubConnectionState.Connected)
+        {
+            await hubConnection.SendAsync("CreateNewRoom", roomName);
+        }
+    }
+
+    private static string GenerateUniqueRoomName()
+    {
+        return Guid.NewGuid().ToString("N");
+    }
+    
     public async ValueTask DisposeAsync()
     {
-        if (hubConnection is not null)
+        if (hubConnection != null)
         {
+            await hubConnection.StopAsync();
             await hubConnection.DisposeAsync();
         }
     }

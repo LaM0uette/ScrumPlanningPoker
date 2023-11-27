@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/Create"
 @attribute [RenderModeInteractiveServer(false)]
 @inject NavigationManager NavigationManager
 
@@ -17,7 +17,7 @@
     private void Create()
     {
         var roomName = GenerateUniqueRoomName();
-        roomLink = NavigationManager.BaseUri + $"JoinRoom/{roomName}";
+        roomLink = NavigationManager.BaseUri + $"JoinR/{roomName}";
     }
 
     private static string GenerateUniqueRoomName()

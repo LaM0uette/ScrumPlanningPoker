@@ -1,0 +1,52 @@
+﻿@page "/room/{RoomName}"
+@attribute [RenderModeInteractiveServer(false)]
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@implements IAsyncDisposable
+
+<h2>Room: @RoomName</h2>
+<p>Clients count: @UsersCount</p>
+
+@code {
+    [Parameter] public string RoomName { get; set; } = "";
+
+    private HubConnection? hubConnection;
+    private int UsersCount;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if (hubConnection == null)
+        {
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl(NavigationManager.ToAbsoluteUri("/session-room-hub"))
+                .Build();
+
+            hubConnection.On<int>("ReceiveUserJoinRoom", (usersCount) =>
+            {
+                UsersCount = usersCount;
+                InvokeAsync(StateHasChanged);
+            });
+
+            await hubConnection.StartAsync();
+        }
+    
+        await ConnectionToHub();
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.StopAsync();
+            await hubConnection.DisposeAsync();
+        }
+    }
+    
+    private async Task ConnectionToHub()
+    {
+        if (hubConnection?.State == HubConnectionState.Connected)
+        {
+            await hubConnection.SendAsync("UserJoinRoom", RoomName, "UserName");
+        }
+    }
+}

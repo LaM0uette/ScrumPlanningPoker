@@ -1,6 +1,5 @@
-﻿@page "/CreateRoom"
-@attribute [RenderModeInteractiveServer]
-@inject IJSRuntime JSRuntime
+﻿@page "/"
+@attribute [RenderModeInteractiveServer(false)]
 @inject NavigationManager NavigationManager
 
 <h2>Create a New Room</h2>
@@ -9,18 +8,16 @@
 
 @if (!string.IsNullOrEmpty(roomLink))
 {
-    <p>Room Link: <a href="@roomLink">@roomLink</a></p>
+    <p>Room Link: <a href="@roomLink">Lien de la room</a></p>
 }
 
 @code {
     private string roomLink;
 
-    private async Task Create()
+    private void Create()
     {
         var roomName = GenerateUniqueRoomName();
         roomLink = NavigationManager.BaseUri + $"JoinRoom/{roomName}";
-        
-        await JSRuntime.InvokeVoidAsync("displayMessageInConsole", $"Room link: {roomLink}");
     }
 
     private static string GenerateUniqueRoomName()

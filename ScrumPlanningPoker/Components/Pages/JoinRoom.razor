@@ -1,5 +1,5 @@
 ﻿@page "/JoinRoom/{RoomName}"
-@attribute [RenderModeInteractiveServer]
+@attribute [RenderModeInteractiveServer(false)]
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager Navigation
 @implements IAsyncDisposable
@@ -16,6 +16,8 @@
     
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine($"OnInitializedAsync called for {RoomName}");
+        
         if (hubConnection == null)
         {
             hubConnection = new HubConnectionBuilder()

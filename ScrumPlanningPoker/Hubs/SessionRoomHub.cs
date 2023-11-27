@@ -18,7 +18,7 @@ public class SessionRoomHub : Hub
 
     #region RoomCreation
 
-    public void CreateNewRoom(string name)
+    public void CreateRoom(string name)
     {
         var room = new Room
         {
@@ -49,7 +49,7 @@ public class SessionRoomHub : Hub
         value.Users.Add(userName);
         Rooms[roomName] = value;
         
-        await Clients.All.SendAsync("ReceiveUserUpdateRoom", Rooms[roomName].Users.Count);
+        await Clients.All.SendAsync("ReceiveUserUpdateRoom", roomName ,Rooms[roomName].Users.Count);
     }
     
     public async Task UserLeaveRoom(string roomName, string userName)
@@ -60,7 +60,7 @@ public class SessionRoomHub : Hub
         value.Users.Remove(userName);
         Rooms[roomName] = value;
         
-        await Clients.All.SendAsync("ReceiveUserUpdateRoom", Rooms[roomName].Users.Count);
+        await Clients.All.SendAsync("ReceiveUserUpdateRoom", roomName, Rooms[roomName].Users.Count);
     }
 
     #endregion

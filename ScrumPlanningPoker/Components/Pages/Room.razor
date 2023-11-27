@@ -21,8 +21,11 @@
                 .WithUrl(NavigationManager.ToAbsoluteUri("/session-room-hub"))
                 .Build();
 
-            hubConnection.On<int>("ReceiveUserUpdateRoom", (usersCount) =>
+            hubConnection.On<string, int>("ReceiveUserUpdateRoom", (roomName, usersCount) =>
             {
+                if (RoomName != roomName)
+                    return;
+                
                 UsersCount = usersCount;
                 InvokeAsync(StateHasChanged);
             });

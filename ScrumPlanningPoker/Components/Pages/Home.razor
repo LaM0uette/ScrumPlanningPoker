@@ -36,7 +36,7 @@
 
         if (hubConnection?.State == HubConnectionState.Connected)
         {
-            await hubConnection.SendAsync("CreateNewRoom", roomName);
+            await hubConnection.SendAsync("CreateRoom", roomName);
         }
     }
 

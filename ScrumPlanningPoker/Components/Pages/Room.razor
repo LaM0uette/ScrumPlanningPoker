@@ -21,7 +21,7 @@
                 .WithUrl(NavigationManager.ToAbsoluteUri("/session-room-hub"))
                 .Build();
 
-            hubConnection.On<int>("ReceiveUserJoinRoom", (usersCount) =>
+            hubConnection.On<int>("ReceiveUserUpdateRoom", (usersCount) =>
             {
                 UsersCount = usersCount;
                 InvokeAsync(StateHasChanged);
@@ -37,6 +37,8 @@
     {
         if (hubConnection != null)
         {
+            await LeaveRoom();
+            
             await hubConnection.StopAsync();
             await hubConnection.DisposeAsync();
         }
@@ -47,6 +49,14 @@
         if (hubConnection?.State == HubConnectionState.Connected)
         {
             await hubConnection.SendAsync("UserJoinRoom", RoomName, "UserName");
+        }
+    }
+    
+    private async Task LeaveRoom()
+    {
+        if (hubConnection?.State == HubConnectionState.Connected)
+        {
+            await hubConnection.SendAsync("UserLeaveRoom", RoomName, "UserName");
         }
     }
 }

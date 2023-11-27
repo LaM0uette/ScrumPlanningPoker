@@ -49,7 +49,18 @@ public class SessionRoomHub : Hub
         value.Users.Add(userName);
         Rooms[roomName] = value;
         
-        await Clients.All.SendAsync("ReceiveUserJoinRoom", Rooms[roomName].Users.Count);
+        await Clients.All.SendAsync("ReceiveUserUpdateRoom", Rooms[roomName].Users.Count);
+    }
+    
+    public async Task UserLeaveRoom(string roomName, string userName)
+    {
+        if (!Rooms.TryGetValue(roomName, out var value))
+            return;
+
+        value.Users.Remove(userName);
+        Rooms[roomName] = value;
+        
+        await Clients.All.SendAsync("ReceiveUserUpdateRoom", Rooms[roomName].Users.Count);
     }
 
     #endregion

@@ -7,8 +7,21 @@
 <h2>Room: @RoomName</h2>
 <p>Clients count: @UsersCount</p>
 
+@if (UserName == null)
+{
+    <p>Enter your name</p>
+    <InputText @bind-Value="UserNameInput" />
+    <button @onclick="JoinRoom">Join</button>
+}
+else
+{
+    <p>Hello, @UserName</p>
+}
+
 @code {
     [Parameter] public string RoomName { get; set; } = "";
+    private string? UserNameInput { get; set; }
+    private string? UserName { get; set; }
 
     private HubConnection? hubConnection;
     private int UsersCount;
@@ -32,8 +45,6 @@
 
             await hubConnection.StartAsync();
         }
-    
-        await ConnectionToHub();
     }
     
     public async ValueTask DisposeAsync()
@@ -47,11 +58,12 @@
         }
     }
     
-    private async Task ConnectionToHub()
+    private async Task JoinRoom()
     {
         if (hubConnection?.State == HubConnectionState.Connected)
         {
-            await hubConnection.SendAsync("UserJoinRoom", RoomName, "UserName");
+            UserName = UserNameInput;
+            await hubConnection.SendAsync("UserJoinRoom", RoomName, UserName);
         }
     }
     
@@ -59,7 +71,7 @@
     {
         if (hubConnection?.State == HubConnectionState.Connected)
         {
-            await hubConnection.SendAsync("UserLeaveRoom", RoomName, "UserName");
+            await hubConnection.SendAsync("UserLeaveRoom", RoomName, UserName);
         }
     }
 }

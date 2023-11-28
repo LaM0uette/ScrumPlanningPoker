@@ -8,8 +8,9 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     #region Statements
 
     [Parameter] public string RoomName { get; set; } = "";
-    protected string? UserNameInput { get; set; }
-    protected string? UserName { get; set; }
+    protected bool RoomIsValid { get; private set; }
+
+    protected string UserName { get; set; } = "";
     protected int UsersCount;
     protected List<string> _users = new();
     
@@ -42,19 +43,18 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     protected Task JoinRoom()
     {
-        UserName = UserNameInput;
-        
-        if (UserName == null) 
+        if (string.IsNullOrEmpty(UserName) || UserName.Length > 30)
+        {
+            RoomIsValid = false;
             return Task.CompletedTask;
-            
+        }
+        
+        RoomIsValid = true;
         return _hubService.JoinRoomAsync(RoomName, UserName);
     }
     
     private Task LeaveRoom()
     {
-        if (UserName == null) 
-            return Task.CompletedTask;
-            
         return _hubService.LeaveRoomAsync(RoomName, UserName);
     }
     

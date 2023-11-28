@@ -5,10 +5,10 @@
 <h2>Room: @RoomName</h2>
 <p>Clients count: @UsersCount</p>
 
-@if (UserName == null)
+@if (!RoomIsValid)
 {
     <p>Enter your name</p>
-    <InputText @bind-Value="UserNameInput" />
+    <InputText @bind-Value="UserName" />
     <button @onclick="JoinRoom">Join</button>
 }
 else
@@ -21,3 +21,4 @@ else
         <p>@user</p>
     }
 }
+

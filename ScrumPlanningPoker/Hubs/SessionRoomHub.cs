@@ -1,18 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using ScrumPlanningPoker.Entity.RoomHub;
 
 namespace ScrumPlanningPoker.Hubs;
-
-public struct Room
-{
-    public Timer Timer { get; set; }
-    public List<string> Users { get; init; }
-}
 
 public class SessionRoomHub : Hub
 {
     #region Statements
 
-    private static readonly Dictionary<string, Room> Rooms = new();
+    private static readonly Dictionary<string, SessionRoom> Rooms = new();
 
     #endregion
 
@@ -20,13 +15,10 @@ public class SessionRoomHub : Hub
 
     public void CreateRoom(string name)
     {
-        var room = new Room
-        {
-            Timer = new Timer(DeleteRoom, name, TimeSpan.FromHours(24), Timeout.InfiniteTimeSpan),
-            Users = []
-        };
+        var timer = new Timer(DeleteRoom, name, TimeSpan.FromHours(24), Timeout.InfiniteTimeSpan);
+        var sessionRoom = new SessionRoom(timer);
         
-        Rooms.Add(name, room);
+        Rooms.Add(name, sessionRoom);
     }
 
     private static void DeleteRoom(object? state)
@@ -41,26 +33,26 @@ public class SessionRoomHub : Hub
 
     #region UserConnection
 
-    public async Task JoinRoom(string roomName, string userName)
+    public Task JoinRoom(string roomName, string userName)
     {
         if (!Rooms.TryGetValue(roomName, out var value))
-            return;
+            return Task.CompletedTask;
 
         value.Users.Add(userName);
         Rooms[roomName] = value;
         
-        await Clients.All.SendAsync("ReceiveUserUpdateRoom", roomName ,Rooms[roomName].Users);
+        return Clients.All.SendAsync("ReceiveUserUpdateRoom", roomName ,Rooms[roomName].Users);
     }
     
-    public async Task LeaveRoom(string roomName, string userName)
+    public Task LeaveRoom(string roomName, string userName)
     {
         if (!Rooms.TryGetValue(roomName, out var value))
-            return;
+            return Task.CompletedTask;
 
         value.Users.Remove(userName);
         Rooms[roomName] = value;
         
-        await Clients.All.SendAsync("ReceiveUserUpdateRoom", roomName, Rooms[roomName].Users);
+        return Clients.All.SendAsync("ReceiveUserUpdateRoom", roomName, Rooms[roomName].Users);
     }
 
     #endregion

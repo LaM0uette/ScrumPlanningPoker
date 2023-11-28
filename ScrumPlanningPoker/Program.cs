@@ -32,8 +32,6 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 // SignalR
-//app.MapHub<ClientsHub>("/clienthub");
-//app.MapHub<RoomHub>("/roomhub");
 app.MapHub<SessionRoomHub>("/session-room-hub");
 
 app.Run();

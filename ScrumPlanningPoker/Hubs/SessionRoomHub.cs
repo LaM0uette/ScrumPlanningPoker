@@ -5,14 +5,14 @@ namespace ScrumPlanningPoker.Hubs;
 public struct Room
 {
     public Timer Timer { get; set; }
-    public List<string> Users { get; set; } // creéer un struct puis une enum pour le role
+    public List<string> Users { get; init; }
 }
 
 public class SessionRoomHub : Hub
 {
     #region Statements
 
-    private static Dictionary<string, Room> Rooms = new();
+    private static readonly Dictionary<string, Room> Rooms = new();
 
     #endregion
 
@@ -41,7 +41,7 @@ public class SessionRoomHub : Hub
 
     #region UserConnection
 
-    public async Task UserJoinRoom(string roomName, string userName)
+    public async Task JoinRoom(string roomName, string userName)
     {
         if (!Rooms.TryGetValue(roomName, out var value))
             return;
@@ -52,7 +52,7 @@ public class SessionRoomHub : Hub
         await Clients.All.SendAsync("ReceiveUserUpdateRoom", roomName ,Rooms[roomName].Users);
     }
     
-    public async Task UserLeaveRoom(string roomName, string userName)
+    public async Task LeaveRoom(string roomName, string userName)
     {
         if (!Rooms.TryGetValue(roomName, out var value))
             return;
@@ -64,26 +64,4 @@ public class SessionRoomHub : Hub
     }
 
     #endregion
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private static int UsersCount { get; set; }
-    
-    public async Task OnConnection()
-    {
-        UsersCount++;
-        await Clients.All.SendAsync("ReceiveNotify", UsersCount);
-    }
-    
-    public async Task OnDisconnection()
-    {
-        UsersCount--;
-        await Clients.All.SendAsync("ReceiveNotify", UsersCount);
-    }
 }

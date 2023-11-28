@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.ResponseCompression;
 using ScrumPlanningPoker.Components;
 using ScrumPlanningPoker.Hubs;
+using ScrumPlanningPoker.Services.HubServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ builder.Services.AddResponseCompression(opts =>
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
         new[] { "application/octet-stream" });
 });
+
+// Singleton
+builder.Services.AddScoped<HubService>();
 
 var app = builder.Build();
 

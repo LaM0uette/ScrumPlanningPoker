@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using ScrumPlanningPoker.Entity.RoomHub;
 using ScrumPlanningPoker.Services.HubServices;
 
 namespace ScrumPlanningPoker.Components.Pages;
@@ -12,7 +13,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
 
     protected string UserName { get; set; } = "";
     protected int UsersCount;
-    protected List<string> _users = new();
+    protected List<User> _users = new();
     
     [Inject] private HubService _hubService { get; init; } = default!;
 
@@ -30,13 +31,13 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         return _hubService.InitializeConnectionAsync();
     }
     
-    private void HandleUserUpdateRoom(string roomName, List<string> users)
+    private void HandleUserUpdateRoom(SessionRoom room)
     {
-        if (RoomName != roomName)
+        if (RoomName != room.Name)
             return;
                 
-        UsersCount = users.Count;
-        _users = users;
+        UsersCount = room.Users.Count;
+        _users = room.Users;
 
         InvokeAsync(StateHasChanged);
     }

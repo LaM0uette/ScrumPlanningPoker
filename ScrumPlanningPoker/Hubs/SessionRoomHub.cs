@@ -13,20 +13,11 @@ public class SessionRoomHub : Hub
 
     #region RoomCreation
 
-    public void CreateRoom(string name)
+    public void CreateRoom(string roomName)
     {
-        var timer = new Timer(DeleteRoom, name, TimeSpan.FromHours(24), Timeout.InfiniteTimeSpan);
-        var sessionRoom = new SessionRoom(timer);
+        var sessionRoom = new SessionRoom(roomName);
         
-        Rooms.Add(name, sessionRoom);
-    }
-
-    private static void DeleteRoom(object? state)
-    {
-        if (state == null) return;
-        
-        var roomName = (string) state;
-        Rooms.Remove(roomName);
+        Rooms.Add(roomName, sessionRoom);
     }
 
     #endregion
@@ -35,24 +26,30 @@ public class SessionRoomHub : Hub
 
     public Task JoinRoom(string roomName, string userName)
     {
-        if (!Rooms.TryGetValue(roomName, out var value))
+        if (!Rooms.TryGetValue(roomName, out var sessionRoom))
             return Task.CompletedTask;
-
-        value.Users.Add(userName);
-        Rooms[roomName] = value;
         
-        return Clients.All.SendAsync("ReceiveUserUpdateRoom", roomName ,Rooms[roomName].Users);
+        var user = new User(userName, "user");
+
+        sessionRoom.Users.Add(user);
+        Rooms[roomName] = sessionRoom;
+        
+        return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
     
     public Task LeaveRoom(string roomName, string userName)
     {
-        if (!Rooms.TryGetValue(roomName, out var value))
+        if (!Rooms.TryGetValue(roomName, out var sessionRoom))
+            return Task.CompletedTask;
+        
+        var user = sessionRoom.Users.FirstOrDefault(user => user.Name == userName);
+        if (user == null)
             return Task.CompletedTask;
 
-        value.Users.Remove(userName);
-        Rooms[roomName] = value;
+        sessionRoom.Users.Remove(user);
+        Rooms[roomName] = sessionRoom;
         
-        return Clients.All.SendAsync("ReceiveUserUpdateRoom", roomName, Rooms[roomName].Users);
+        return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
 
     #endregion

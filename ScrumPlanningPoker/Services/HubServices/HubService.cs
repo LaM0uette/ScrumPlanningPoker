@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using ScrumPlanningPoker.Entity.RoomHub;
 
 namespace ScrumPlanningPoker.Services.HubServices;
 
@@ -7,7 +8,7 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
 {
     #region Statements
     
-    public event Action<string, List<string>>? OnUserUpdateRoom;
+    public event Action<SessionRoom>? OnUserUpdateRoom;
     
     private HubConnection? _hubConnection;
 
@@ -24,9 +25,9 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
             .WithUrl(navigationManager.ToAbsoluteUri("/session-room-hub"))
             .Build();
 
-        _hubConnection.On<string, List<string>>("ReceiveUserUpdateRoom", (roomName, users) =>
+        _hubConnection.On<SessionRoom>("ReceiveUserUpdateRoom", (room) =>
         {
-            OnUserUpdateRoom?.Invoke(roomName, users);
+            OnUserUpdateRoom?.Invoke(room);
         });
         
         return _hubConnection.StartAsync();

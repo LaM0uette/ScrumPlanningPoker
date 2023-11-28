@@ -1,56 +1,12 @@
 ﻿@page "/"
-@using Microsoft.AspNetCore.SignalR.Client
 @attribute [RenderModeInteractiveServer(false)]
-@inject NavigationManager NavigationManager
-@implements IAsyncDisposable
+@inherits HomeBase
 
 <h2>Create a New Room</h2>
 
 <button @onclick="Create">Créer une Room</button>
 
-@if (!string.IsNullOrEmpty(roomLink))
+@if (!string.IsNullOrEmpty(RoomLink))
 {
-    <p>Room Link: <a href="@roomLink">Lien de la room</a></p>
-}
-
-@code {
-    private string roomLink;
-    private HubConnection? hubConnection;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        if (hubConnection == null)
-        {
-            hubConnection = new HubConnectionBuilder()
-                .WithUrl(NavigationManager.ToAbsoluteUri("/session-room-hub"))
-                .Build();
-            
-            await hubConnection.StartAsync();
-        }
-    }
-
-    private async void Create()
-    {
-        var roomName = GenerateUniqueRoomName();
-        roomLink = NavigationManager.BaseUri + $"room/{roomName}";
-
-        if (hubConnection?.State == HubConnectionState.Connected)
-        {
-            await hubConnection.SendAsync("CreateRoom", roomName);
-        }
-    }
-
-    private static string GenerateUniqueRoomName()
-    {
-        return Guid.NewGuid().ToString("N");
-    }
-    
-    public async ValueTask DisposeAsync()
-    {
-        if (hubConnection != null)
-        {
-            await hubConnection.StopAsync();
-            await hubConnection.DisposeAsync();
-        }
-    }
+    <p>Room Link: <a href="@RoomLink">Lien de la room</a></p>
 }

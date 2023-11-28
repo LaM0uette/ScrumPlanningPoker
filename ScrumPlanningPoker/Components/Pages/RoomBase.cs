@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
+using ScrumPlanningPoker.Services.HubServices;
 
 namespace ScrumPlanningPoker.Components.Pages;
 
@@ -13,65 +13,58 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     protected int UsersCount;
     protected List<string> _users = new();
     
-    [Inject] private NavigationManager _navigationManager { get; init; } = default!;
-    
-    private HubConnection? _hubConnection;
+    [Inject] private HubService _hubService { get; init; } = default!;
 
     #endregion
 
     #region Functions
     
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        if (_hubConnection == null)
-        {
-            _hubConnection = new HubConnectionBuilder()
-                .WithUrl(_navigationManager.ToAbsoluteUri("/session-room-hub"))
-                .Build();
-
-            _hubConnection.On<string, List<string>>("ReceiveUserUpdateRoom", (roomName, users) =>
-            {
-                if (RoomName != roomName)
-                    return;
-                
-                UsersCount = users.Count;
-                _users = users;
-                
-                InvokeAsync(StateHasChanged);
-            });
-
-            await _hubConnection.StartAsync();
-        }
+        _hubService.OnUserUpdateRoom += HandleUserUpdateRoom;
     }
     
-    protected async Task JoinRoom()
+    protected override Task OnInitializedAsync()
     {
-        if (_hubConnection?.State == HubConnectionState.Connected)
-        {
-            UserName = UserNameInput;
-            await _hubConnection.SendAsync("UserJoinRoom", RoomName, UserName);
-        }
+        return _hubService.InitializeConnectionAsync();
     }
+    
+    private void HandleUserUpdateRoom(string roomName, List<string> users)
+    {
+        if (RoomName != roomName)
+            return;
+                
+        UsersCount = users.Count;
+        _users = users;
 
+        InvokeAsync(StateHasChanged);
+    }
+    
+    protected Task JoinRoom()
+    {
+        UserName = UserNameInput;
+        
+        if (UserName == null) 
+            return Task.CompletedTask;
+            
+        return _hubService.JoinRoomAsync(RoomName, UserName);
+    }
+    
+    private Task LeaveRoom()
+    {
+        if (UserName == null) 
+            return Task.CompletedTask;
+            
+        return _hubService.LeaveRoomAsync(RoomName, UserName);
+    }
+    
     public async ValueTask DisposeAsync()
     {
-        if (_hubConnection != null)
-        {
-            await LeaveRoom();
-            
-            await _hubConnection.StopAsync();
-            await _hubConnection.DisposeAsync();
-        }
+        _hubService.OnUserUpdateRoom -= HandleUserUpdateRoom;
+        
+        await LeaveRoom();
         
         GC.SuppressFinalize(this);
-    }
-    
-    private async Task LeaveRoom()
-    {
-        if (_hubConnection?.State == HubConnectionState.Connected)
-        {
-            await _hubConnection.SendAsync("UserLeaveRoom", RoomName, UserName);
-        }
     }
 
     #endregion

@@ -1,8 +1,6 @@
 ﻿@page "/room/{RoomName}"
 @attribute [RenderModeInteractiveServer(false)]
-@using Microsoft.AspNetCore.SignalR.Client
-@inject NavigationManager NavigationManager
-@implements IAsyncDisposable
+@inherits RoomBase
 
 <h2>Room: @RoomName</h2>
 <p>Clients count: @UsersCount</p>
@@ -21,66 +19,5 @@ else
     @foreach(var user in _users)
     {
         <p>@user</p>
-    }
-}
-
-@code {
-    [Parameter] public string RoomName { get; set; } = "";
-    private string? UserNameInput { get; set; }
-    private string? UserName { get; set; }
-
-    private HubConnection? hubConnection;
-    private int UsersCount;
-    private List<string> _users = new();
-    
-    protected override async Task OnInitializedAsync()
-    {
-        if (hubConnection == null)
-        {
-            hubConnection = new HubConnectionBuilder()
-                .WithUrl(NavigationManager.ToAbsoluteUri("/session-room-hub"))
-                .Build();
-
-            hubConnection.On<string, List<string>>("ReceiveUserUpdateRoom", (roomName, users) =>
-            {
-                if (RoomName != roomName)
-                    return;
-                
-                UsersCount = users.Count;
-                _users = users;
-                
-                InvokeAsync(StateHasChanged);
-            });
-
-            await hubConnection.StartAsync();
-        }
-    }
-    
-    public async ValueTask DisposeAsync()
-    {
-        if (hubConnection != null)
-        {
-            await LeaveRoom();
-            
-            await hubConnection.StopAsync();
-            await hubConnection.DisposeAsync();
-        }
-    }
-    
-    private async Task JoinRoom()
-    {
-        if (hubConnection?.State == HubConnectionState.Connected)
-        {
-            UserName = UserNameInput;
-            await hubConnection.SendAsync("UserJoinRoom", RoomName, UserName);
-        }
-    }
-    
-    private async Task LeaveRoom()
-    {
-        if (hubConnection?.State == HubConnectionState.Connected)
-        {
-            await hubConnection.SendAsync("UserLeaveRoom", RoomName, UserName);
-        }
     }
 }

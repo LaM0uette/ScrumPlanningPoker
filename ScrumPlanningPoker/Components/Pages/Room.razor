@@ -19,10 +19,24 @@
 <p>All users :</p>
 @foreach (var user in _users)
 {
-    <p>@user.Guid | @user.Name | @user.IsSpectator | @user.CardValue</p>
+    <p>@user.Guid | @user.Name | @user.IsSpectator</p>
+    @if(_user.IsSpectator)
+    {
+        @if (_user.Guid != user.Guid || _user.Name != user.Name)
+        {
+            <p>@user.CardValue</p>
+        }
+    }
+    else
+    {
+        <p>...</p>
+    }
 }
 
-@foreach (var cardValue in CardValues)
+@if (!_user.IsSpectator)
 {
-    <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button>
+    @foreach (var cardValue in CardValues)
+    {
+        <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button>
+    }
 }

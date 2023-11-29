@@ -15,8 +15,10 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     protected bool IsSpectator { get; set; }
     
     protected int[] CardValues { get; private init; } = { 1, 2, 3, 5, 8, 13, 20, 40, 100 };
+    protected bool CanChooseCard { get; set; } = true;
     
     protected int UsersCount;
+    protected User _user;
     protected List<User> _users = new();
     
     [Inject] private HubService _hubService { get; init; } = default!;
@@ -66,9 +68,13 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         //return Guid.NewGuid().ToString("N");
     }
     
-    protected void ClickOnCard(int cardValue)
+    protected Task ClickOnCard(int cardValue)
     {
-        Console.WriteLine(cardValue);
+        if (!CanChooseCard) 
+            return Task.CompletedTask;
+        
+        CanChooseCard = false;
+        return _hubService.ClickOnCardAsync(RoomName, "test", UserName, cardValue);
     }
     
     public async ValueTask DisposeAsync()

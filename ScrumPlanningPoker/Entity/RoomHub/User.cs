@@ -15,7 +15,7 @@ public class User(string guid, string name, string roleName)
     public string Guid { get; set; } = guid;
     public string Name { get; set; } = name;
     public string RoleName { get; set; } = roleName;
-    public int Vote { get; set; } = -1;
+    public int CardValue { get; set; } = -1;
 
     [JsonIgnore] public Role Role { get; set; } = GetRole(roleName);
 

@@ -70,6 +70,18 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
 
     #endregion
 
+    #region UserInteractions
+
+    public Task ClickOnCardAsync(string roomName, string guid, string userName, int cardValue)
+    {
+        if (_hubConnection?.State != HubConnectionState.Connected) 
+            return Task.CompletedTask;
+        
+        return _hubConnection.SendAsync("ClickOnCard", roomName, guid, userName, cardValue);
+    }
+
+    #endregion
+
     #region Functions
 
     public string GetBaseUri()

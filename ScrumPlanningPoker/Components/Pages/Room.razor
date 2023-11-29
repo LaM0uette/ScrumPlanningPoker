@@ -19,10 +19,10 @@
 <p>All users :</p>
 @foreach (var user in _users)
 {
-    <p>@user.Guid | @user.Name | @user.RoleName | @user.Role | @user.Vote</p>
-    
-    @foreach (var cardValue in CardValues)
-    {
-        <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button>
-    }
+    <p>@user.Guid | @user.Name | @user.RoleName | @user.Role | @user.CardValue</p>
+}
+
+@foreach (var cardValue in CardValues)
+{
+    <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button>
 }

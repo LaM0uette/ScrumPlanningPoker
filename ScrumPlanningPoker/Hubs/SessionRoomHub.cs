@@ -53,4 +53,23 @@ public class SessionRoomHub : Hub
     }
 
     #endregion
+
+    #region UserInteractions
+
+    public Task ClickOnCard(string roomName, string guid, string userName, int cardValue)
+    {
+        if (!Rooms.TryGetValue(roomName, out var sessionRoom))
+            return Task.CompletedTask;
+        
+        var user = sessionRoom.Users.FirstOrDefault(user => user.Name == userName);
+        if (user == null)
+            return Task.CompletedTask;
+
+        user.CardValue = cardValue;
+        Rooms[roomName] = sessionRoom;
+        
+        return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
+    }
+
+    #endregion
 }

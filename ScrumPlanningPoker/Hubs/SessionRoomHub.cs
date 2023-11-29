@@ -24,12 +24,10 @@ public class SessionRoomHub : Hub
 
     #region UserConnection
 
-    public Task JoinRoom(string roomName, string guid, string userName, bool isSpectator)
+    public Task JoinRoom(string roomName, User user)
     {
         if (!Rooms.TryGetValue(roomName, out var sessionRoom))
             return Task.CompletedTask;
-        
-        var user = new User(guid, userName, isSpectator);
 
         sessionRoom.Users.Add(user);
         Rooms[roomName] = sessionRoom;
@@ -37,16 +35,16 @@ public class SessionRoomHub : Hub
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
     
-    public Task LeaveRoom(string roomName, string userName)
+    public Task LeaveRoom(string roomName, User user)
     {
         if (!Rooms.TryGetValue(roomName, out var sessionRoom))
             return Task.CompletedTask;
         
-        var user = sessionRoom.Users.FirstOrDefault(user => user.Name == userName);
-        if (user == null)
+        var userToRemove = sessionRoom.Users.FirstOrDefault(u => u.Guid == user.Guid && u.Name == user.Name);
+        if (userToRemove == null)
             return Task.CompletedTask;
 
-        sessionRoom.Users.Remove(user);
+        sessionRoom.Users.Remove(userToRemove);
         Rooms[roomName] = sessionRoom;
         
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
@@ -56,16 +54,16 @@ public class SessionRoomHub : Hub
 
     #region UserInteractions
 
-    public Task ClickOnCard(string roomName, string guid, string userName, int cardValue)
+    public Task ClickOnCard(string roomName, User user)
     {
         if (!Rooms.TryGetValue(roomName, out var sessionRoom))
             return Task.CompletedTask;
         
-        var user = sessionRoom.Users.FirstOrDefault(user => user.Guid == guid && user.Name == userName);
-        if (user == null)
+        var userToUpdate = sessionRoom.Users.FirstOrDefault(u => u.Guid == user.Guid && u.Name == user.Name);
+        if (userToUpdate == null)
             return Task.CompletedTask;
 
-        user.CardValue = cardValue;
+        userToUpdate.CardValue = user.CardValue;
         Rooms[roomName] = sessionRoom;
         
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);

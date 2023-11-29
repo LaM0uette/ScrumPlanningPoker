@@ -58,8 +58,10 @@ public class RoomBase : ComponentBase, IAsyncDisposable
             return Task.CompletedTask;
         }
         
+        _user = new User(GenerateGuid(), UserName, IsSpectator);
+        
         RoomIsValid = true;
-        return _hubService.JoinRoomAsync(GenerateGuid(), RoomName, UserName, IsSpectator);
+        return _hubService.JoinRoomAsync(RoomName, _user);
     }
     
     private static string GenerateGuid()
@@ -73,8 +75,10 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         if (!CanChooseCard) 
             return Task.CompletedTask;
         
+        _user.CardValue = cardValue;
+        
         CanChooseCard = false;
-        return _hubService.ClickOnCardAsync(RoomName, "test", UserName, cardValue);
+        return _hubService.ClickOnCardAsync(RoomName, _user);
     }
     
     public async ValueTask DisposeAsync()
@@ -88,7 +92,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     private Task LeaveRoom()
     {
-        return _hubService.LeaveRoomAsync(RoomName, UserName);
+        return _hubService.LeaveRoomAsync(RoomName, _user);
     }
 
     #endregion

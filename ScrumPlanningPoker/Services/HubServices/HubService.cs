@@ -41,20 +41,20 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
         return _hubConnection.SendAsync("CreateRoom", roomName);
     }
 
-    public Task JoinRoomAsync(string roomName, string guid, string userName, bool isSpectator)
+    public Task JoinRoomAsync(string roomName, User user)
     {
         if (_hubConnection?.State != HubConnectionState.Connected) 
             return Task.CompletedTask;
         
-        return _hubConnection.SendAsync("JoinRoom", guid, roomName, userName, isSpectator);
+        return _hubConnection.SendAsync("JoinRoom", roomName, user);
     }
 
-    public Task LeaveRoomAsync(string roomName, string userName)
+    public Task LeaveRoomAsync(string roomName, User user)
     {
         if (_hubConnection?.State != HubConnectionState.Connected) 
             return Task.CompletedTask;
         
-        return _hubConnection.SendAsync("LeaveRoom", roomName, userName);
+        return _hubConnection.SendAsync("LeaveRoom", roomName, user);
     }
     
     public async ValueTask DisposeAsync()
@@ -72,12 +72,12 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
 
     #region UserInteractions
 
-    public Task ClickOnCardAsync(string roomName, string guid, string userName, int cardValue)
+    public Task ClickOnCardAsync(string roomName, User user)
     {
         if (_hubConnection?.State != HubConnectionState.Connected) 
             return Task.CompletedTask;
         
-        return _hubConnection.SendAsync("ClickOnCard", roomName, guid, userName, cardValue);
+        return _hubConnection.SendAsync("ClickOnCard", roomName, user);
     }
 
     #endregion

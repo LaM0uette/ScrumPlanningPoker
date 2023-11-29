@@ -53,21 +53,27 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         }
         
         RoomIsValid = true;
-        return _hubService.JoinRoomAsync(RoomName, UserName, IsSpectator);
+        return _hubService.JoinRoomAsync(GenerateGuid(), RoomName, UserName, IsSpectator);
     }
     
-    private Task LeaveRoom()
+    private static string GenerateGuid()
     {
-        return _hubService.LeaveRoomAsync(RoomName, UserName);
+        return "test";
+        //return Guid.NewGuid().ToString("N");
     }
     
     public async ValueTask DisposeAsync()
     {
         _hubService.OnUserUpdateRoom -= HandleUserUpdateRoom;
         
-        await LeaveRoom();
+        //await LeaveRoom();
         
         GC.SuppressFinalize(this);
+    }
+    
+    private Task LeaveRoom()
+    {
+        return _hubService.LeaveRoomAsync(RoomName, UserName);
     }
 
     #endregion

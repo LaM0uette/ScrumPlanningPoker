@@ -29,7 +29,7 @@ public class SessionRoomHub : Hub
         if (!Rooms.TryGetValue(roomName, out var sessionRoom))
             return Task.CompletedTask;
         
-        var user = new User(guid, userName, isSpectator ? "spectator" : "user");
+        var user = new User(guid, userName, isSpectator);
 
         sessionRoom.Users.Add(user);
         Rooms[roomName] = sessionRoom;
@@ -61,7 +61,7 @@ public class SessionRoomHub : Hub
         if (!Rooms.TryGetValue(roomName, out var sessionRoom))
             return Task.CompletedTask;
         
-        var user = sessionRoom.Users.FirstOrDefault(user => user.Name == userName);
+        var user = sessionRoom.Users.FirstOrDefault(user => user.Guid == guid && user.Name == userName);
         if (user == null)
             return Task.CompletedTask;
 

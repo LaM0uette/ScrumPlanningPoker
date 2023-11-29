@@ -19,7 +19,7 @@
 <p>All users :</p>
 @foreach (var user in _users)
 {
-    <p>@user.Guid | @user.Name | @user.RoleName | @user.Role | @user.CardValue</p>
+    <p>@user.Guid | @user.Name | @user.IsSpectator | @user.CardValue</p>
 }
 
 @foreach (var cardValue in CardValues)

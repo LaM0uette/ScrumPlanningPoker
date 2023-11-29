@@ -14,6 +14,8 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     protected string UserName { get; set; } = "";
     protected bool IsSpectator { get; set; }
     
+    protected int[] CardValues { get; private init; } = { 1, 2, 3, 5, 8, 13, 20, 40, 100 };
+    
     protected int UsersCount;
     protected List<User> _users = new();
     
@@ -62,6 +64,11 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     {
         return "test";
         //return Guid.NewGuid().ToString("N");
+    }
+    
+    protected void ClickOnCard(int cardValue)
+    {
+        Console.WriteLine(cardValue);
     }
     
     public async ValueTask DisposeAsync()

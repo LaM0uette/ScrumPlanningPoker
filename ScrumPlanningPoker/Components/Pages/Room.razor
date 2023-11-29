@@ -8,18 +8,21 @@
 @if (!RoomIsValid)
 {
     <p>Enter your name</p>
-    <InputText @bind-Value="UserName" />
-    <InputCheckbox  @bind-Value="IsSpectator" />
+    <InputText @bind-Value="UserName"/>
+    <InputCheckbox @bind-Value="IsSpectator"/>
     <button @onclick="JoinRoom">Join</button>
-}
-else
-{
-    <p>Hello, @UserName</p>
-    
-    <p>All users :</p>
-    @foreach(var user in _users)
-    {
-        <p>@user.Guid | @user.Name | @user.Role | @user.Vote</p>
-    }
+    return;
 }
 
+<p>Hello, @UserName</p>
+
+<p>All users :</p>
+@foreach (var user in _users)
+{
+    <p>@user.Guid | @user.Name | @user.RoleName | @user.Role | @user.Vote</p>
+    
+    @foreach (var cardValue in CardValues)
+    {
+        <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button>
+    }
+}

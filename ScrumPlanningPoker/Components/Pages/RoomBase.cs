@@ -13,13 +13,14 @@ public class RoomBase : ComponentBase, IAsyncDisposable
 
     protected string UserName { get; set; } = "";
     protected bool IsSpectator { get; set; }
+    protected bool CardsIsRevealed { get; set; }
     
     protected int[] CardValues { get; private init; } = { 1, 2, 3, 5, 8, 13, 20, 40, 100 };
     protected bool CanChooseCard { get; set; } = true;
     
     protected int UsersCount;
-    protected User _user;
-    protected List<User> _users = new();
+    protected User CurrentUser;
+    protected List<User> Users = new();
     
     [Inject] private HubService _hubService { get; init; } = default!;
 
@@ -30,6 +31,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     protected override void OnInitialized()
     {
         _hubService.OnUserUpdateRoom += HandleUserUpdateRoom;
+        _hubService.OnRevealCards += HandleRevealCards;
     }
     
     protected override async Task OnInitializedAsync()
@@ -44,8 +46,16 @@ public class RoomBase : ComponentBase, IAsyncDisposable
             return;
                 
         UsersCount = room.Users.Count;
-        _users = room.Users;
+        Users = room.Users;
 
+        InvokeAsync(StateHasChanged);
+    }
+    
+    private void HandleRevealCards(bool reveal)
+    {
+        CardsIsRevealed = reveal;
+        CanChooseCard = !reveal;
+        
         InvokeAsync(StateHasChanged);
     }
     
@@ -58,10 +68,10 @@ public class RoomBase : ComponentBase, IAsyncDisposable
             return Task.CompletedTask;
         }
         
-        _user = new User(GenerateGuid(), UserName, IsSpectator);
+        CurrentUser = new User(GenerateGuid(), UserName, IsSpectator);
         
         RoomIsValid = true;
-        return _hubService.JoinRoomAsync(RoomName, _user);
+        return _hubService.JoinRoomAsync(RoomName, CurrentUser);
     }
     
     private static string GenerateGuid()
@@ -75,15 +85,26 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         if (!CanChooseCard) 
             return Task.CompletedTask;
         
-        _user.CardValue = cardValue;
+        CurrentUser.CardValue = cardValue;
         
         CanChooseCard = false;
-        return _hubService.ClickOnCardAsync(RoomName, _user);
+        return _hubService.ClickOnCardAsync(RoomName, CurrentUser);
+    }
+    
+    protected Task RevealCards()
+    {
+        return _hubService.RevealCardsAsync(RoomName, true);
+    }
+    
+    protected Task NewGame()
+    {
+        return _hubService.RevealCardsAsync(RoomName, false);
     }
     
     public async ValueTask DisposeAsync()
     {
         _hubService.OnUserUpdateRoom -= HandleUserUpdateRoom;
+        _hubService.OnRevealCards -= HandleRevealCards;
         
         await LeaveRoom();
         
@@ -92,7 +113,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     private Task LeaveRoom()
     {
-        return _hubService.LeaveRoomAsync(RoomName, _user);
+        return _hubService.LeaveRoomAsync(RoomName, CurrentUser);
     }
 
     #endregion

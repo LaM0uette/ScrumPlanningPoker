@@ -68,6 +68,14 @@ public class SessionRoomHub : Hub
         
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
+    
+    public Task RevealCards(string roomName, bool reveal)
+    {
+        if (!Rooms.TryGetValue(roomName, out _))
+            return Task.CompletedTask;
+
+        return Clients.All.SendAsync("ReceiveRevealCards", reveal);
+    }
 
     #endregion
 }

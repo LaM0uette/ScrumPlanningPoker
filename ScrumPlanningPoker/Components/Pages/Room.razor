@@ -17,26 +17,51 @@
 <p>Hello, @UserName</p>
 
 <p>All users :</p>
-@foreach (var user in _users)
+@foreach (var user in Users)
 {
     <p>@user.Guid | @user.Name | @user.IsSpectator</p>
-    @if(_user.IsSpectator)
+    @if(CurrentUser.IsSpectator)
     {
-        @if (_user.Guid != user.Guid || _user.Name != user.Name)
+        @if (CurrentUser.Guid != user.Guid || CurrentUser.Name != user.Name)
         {
             <p>@user.CardValue</p>
         }
     }
+    else if (!CurrentUser.IsSpectator && CurrentUser.Guid == user.Guid && CurrentUser.Name == user.Name)
+    {
+        <p>@user.CardValue</p>
+    }
     else
     {
-        <p>...</p>
+        @if (user.IsSpectator)
+            continue;
+        
+        @if (CardsIsRevealed)
+        {
+            <p>@user.CardValue</p>
+        }
+        else
+        {
+            <p>?</p>
+        }
     }
 }
 
-@if (!_user.IsSpectator)
+@if (!CurrentUser.IsSpectator)
 {
     @foreach (var cardValue in CardValues)
     {
         <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button>
+    }
+}
+else
+{
+    @if (!CardsIsRevealed)
+    {
+        <button @onclick="RevealCards">Reveal cards</button>
+    }
+    else
+    {
+        <button @onclick="NewGame">Start new game</button>
     }
 }

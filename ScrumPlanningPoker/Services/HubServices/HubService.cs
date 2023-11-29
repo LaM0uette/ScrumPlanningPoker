@@ -9,6 +9,7 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
     #region Statements
     
     public event Action<SessionRoom>? OnUserUpdateRoom;
+    public event Action<bool>? OnRevealCards;
     
     private HubConnection? _hubConnection;
 
@@ -28,6 +29,11 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
         _hubConnection.On<SessionRoom>("ReceiveUserUpdateRoom", (room) =>
         {
             OnUserUpdateRoom?.Invoke(room);
+        });
+        
+        _hubConnection.On<bool>("ReceiveRevealCards", (reveal) =>
+        {
+            OnRevealCards?.Invoke(reveal);
         });
         
         return _hubConnection.StartAsync();
@@ -78,6 +84,14 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
             return Task.CompletedTask;
         
         return _hubConnection.SendAsync("ClickOnCard", roomName, user);
+    }
+    
+    public Task RevealCardsAsync(string roomName, bool reveal)
+    {
+        if (_hubConnection?.State != HubConnectionState.Connected) 
+            return Task.CompletedTask;
+        
+        return _hubConnection.SendAsync("RevealCards", roomName, reveal);
     }
 
     #endregion

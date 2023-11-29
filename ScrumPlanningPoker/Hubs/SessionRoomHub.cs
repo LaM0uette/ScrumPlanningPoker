@@ -69,12 +69,19 @@ public class SessionRoomHub : Hub
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
     
-    public Task RevealCards(string roomName, bool reveal)
+    public async Task RevealCards(string roomName, bool reveal)
     {
-        if (!Rooms.TryGetValue(roomName, out _))
-            return Task.CompletedTask;
+        if (!Rooms.TryGetValue(roomName, out var sessionRoom))
+            return;
 
-        return Clients.All.SendAsync("ReceiveRevealCards", reveal);
+        if (!reveal)
+        {
+            sessionRoom.Users.ForEach(u => u.CardValue = 0);
+            Rooms[roomName] = sessionRoom;
+        }
+        
+        await Clients.All.SendAsync("ReceiveRevealCards", reveal);
+        await Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
 
     #endregion

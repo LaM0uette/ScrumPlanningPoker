@@ -24,12 +24,26 @@
     {
         @if (CurrentUser.Guid != user.Guid || CurrentUser.Name != user.Name)
         {
-            <p>@user.CardValue</p>
+            @if (user.CardValue == 0)
+            {
+                <p>?</p>
+            }
+            else
+            {
+                <p>@user.CardValue</p>
+            }
         }
     }
     else if (!CurrentUser.IsSpectator && CurrentUser.Guid == user.Guid && CurrentUser.Name == user.Name)
     {
-        <p>@user.CardValue</p>
+        @if (user.CardValue == 0)
+        {
+            <p>?</p>
+        }
+        else
+        {
+            <p>@user.CardValue</p>
+        }
     }
     else
     {
@@ -38,7 +52,14 @@
         
         @if (CardsIsRevealed)
         {
-            <p>@user.CardValue</p>
+            @if (user.CardValue == 0)
+            {
+                <p>?</p>
+            }
+            else
+            {
+                <p>@user.CardValue</p>
+            }
         }
         else
         {
@@ -49,9 +70,12 @@
 
 @if (!CurrentUser.IsSpectator)
 {
-    @foreach (var cardValue in CardValues)
+    @if (!CardsIsRevealed)
     {
-        <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button>
+        @foreach (var cardValue in CardValues)
+        {
+            <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button>
+        }
     }
 }
 else

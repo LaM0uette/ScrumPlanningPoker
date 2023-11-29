@@ -41,12 +41,12 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
         return _hubConnection.SendAsync("CreateRoom", roomName);
     }
 
-    public Task JoinRoomAsync(string roomName, string userName)
+    public Task JoinRoomAsync(string roomName, string userName, bool isSpectator)
     {
         if (_hubConnection?.State != HubConnectionState.Connected) 
             return Task.CompletedTask;
         
-        return _hubConnection.SendAsync("JoinRoom", roomName, userName);
+        return _hubConnection.SendAsync("JoinRoom", roomName, userName, isSpectator);
     }
 
     public Task LeaveRoomAsync(string roomName, string userName)

@@ -12,6 +12,8 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     protected bool RoomIsValid { get; private set; }
 
     protected string UserName { get; set; } = "";
+    protected bool IsSpectator { get; set; }
+    
     protected int UsersCount;
     protected List<User> _users = new();
     
@@ -51,7 +53,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         }
         
         RoomIsValid = true;
-        return _hubService.JoinRoomAsync(RoomName, UserName);
+        return _hubService.JoinRoomAsync(RoomName, UserName, IsSpectator);
     }
     
     private Task LeaveRoom()

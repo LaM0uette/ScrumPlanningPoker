@@ -24,12 +24,12 @@ public class SessionRoomHub : Hub
 
     #region UserConnection
 
-    public Task JoinRoom(string roomName, string userName)
+    public Task JoinRoom(string roomName, string userName, bool isSpectator)
     {
         if (!Rooms.TryGetValue(roomName, out var sessionRoom))
             return Task.CompletedTask;
         
-        var user = new User(userName, "user");
+        var user = new User(userName, isSpectator ? "spectator" : "user");
 
         sessionRoom.Users.Add(user);
         Rooms[roomName] = sessionRoom;

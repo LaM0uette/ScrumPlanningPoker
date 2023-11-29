@@ -6,7 +6,13 @@
 
 <button @onclick="Create">Créer une Room</button>
 
+<br/>
+
 @if (!string.IsNullOrEmpty(RoomLink))
 {
-    <p>Room Link: <a href="@RoomLink">Lien de la room</a></p>
+    <p>@RoomLink</p>
+    
+    <button>
+        <a href="@RoomLink">Lien de la room</a>
+    </button>
 }

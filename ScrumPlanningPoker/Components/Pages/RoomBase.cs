@@ -28,11 +28,12 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         _hubService.OnUserUpdateRoom += HandleUserUpdateRoom;
     }
     
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        return _hubService.InitializeConnectionAsync();
+        await _hubService.InitializeConnectionAsync();
+        await JoinRoom();
     }
-    
+
     private void HandleUserUpdateRoom(SessionRoom room)
     {
         if (RoomName != room.Name)
@@ -46,6 +47,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     protected Task JoinRoom()
     {
+        UserName = "TestTEst";
         if (string.IsNullOrEmpty(UserName) || UserName.Length > 30)
         {
             RoomIsValid = false;
@@ -66,7 +68,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     {
         _hubService.OnUserUpdateRoom -= HandleUserUpdateRoom;
         
-        //await LeaveRoom();
+        await LeaveRoom();
         
         GC.SuppressFinalize(this);
     }

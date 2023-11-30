@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
+using MudBlazor.Services;
 using ScrumPlanningPoker.Components;
 using ScrumPlanningPoker.Hubs;
 using ScrumPlanningPoker.Services.HubServices;
@@ -15,8 +16,13 @@ builder.Services.AddResponseCompression(opts =>
         new[] { "application/octet-stream" });
 });
 
+builder.Services.AddServerSideBlazor();
+
 // Singleton
 builder.Services.AddScoped<HubService>();
+
+// Components
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 

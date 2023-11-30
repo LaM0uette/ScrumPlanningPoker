@@ -21,10 +21,9 @@ button {
     font-size: 18px;
     font-weight: bold;
     color: var(--tiercary-color);
-    min-width: 180px;
     transition: all 0.1s ease-in-out;
 }
 
 button:hover {
-    opacity: 75%;
+    opacity: 70%;
 }

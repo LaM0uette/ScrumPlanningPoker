@@ -5,26 +5,33 @@
 <title>Lobby</title>
 
 <div class="page">
-    
+
     <div class="container">
-        
+
         <h1 class="title">Create a new game</h1>
 
-        <button @onclick="Create">New game</button>
+        @if (!string.IsNullOrEmpty(RoomLink))
+        {
+            <div class="link-container">
 
+                <div class="scroll-box">
+                    <p>@RoomLink</p>
+                </div>
+
+                <button class="room-link-button" @onclick="CopyRoomLink">
+                    <img src="icons/copy.png" alt="copy"/>
+                </button>
+
+                <button class="room-link-button goto-link" @onclick="GoToRoomLink">
+                    <img src="icons/arrow.png" alt="arrow"/>
+                </button>
+
+            </div>
+        }
+        else
+        {
+            <button class="action-button" @onclick="Create">New game</button>
+        }
     </div>
-    
+
 </div>
-
-
-@* *@
-@* <br/> *@
-@* *@
-@* @if (!string.IsNullOrEmpty(RoomLink)) *@
-@* { *@
-@*     <p>@RoomLink</p> *@
-@*      *@
-@*     <button> *@
-@*         <a href="@RoomLink">Lien de la room</a> *@
-@*     </button> *@
-@* } *@

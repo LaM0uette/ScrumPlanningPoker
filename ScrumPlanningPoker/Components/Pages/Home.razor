@@ -2,17 +2,29 @@
 @attribute [RenderModeInteractiveServer(false)]
 @inherits HomeBase
 
-<h2>Create a New Room</h2>
+<title>Lobby</title>
 
-<button @onclick="Create">Créer une Room</button>
-
-<br/>
-
-@if (!string.IsNullOrEmpty(RoomLink))
-{
-    <p>@RoomLink</p>
+<div class="page">
     
-    <button>
-        <a href="@RoomLink">Lien de la room</a>
-    </button>
-}
+    <div class="container">
+        
+        <h1 class="title">Create a new game</h1>
+
+        <button @onclick="Create">New game</button>
+
+    </div>
+    
+</div>
+
+
+@* *@
+@* <br/> *@
+@* *@
+@* @if (!string.IsNullOrEmpty(RoomLink)) *@
+@* { *@
+@*     <p>@RoomLink</p> *@
+@*      *@
+@*     <button> *@
+@*         <a href="@RoomLink">Lien de la room</a> *@
+@*     </button> *@
+@* } *@

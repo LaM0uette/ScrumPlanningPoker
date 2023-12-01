@@ -93,13 +93,9 @@
 
                             <div class="user-note">
 
-                                @if (CurrentUser.IsSpectator || (CurrentUser.Guid == user.Guid && CurrentUser.Name == user.Name) || CardsIsRevealed)
+                                @if (CardsIsRevealed)
                                 {
                                     <p class="user-text">@Cards.GetCardValueString(user.CardValue)</p>
-                                }
-                                else
-                                {
-                                    <p class="user-text">@Cards.GetCardValueString(null)</p>
                                 }
                                 
                             </div>

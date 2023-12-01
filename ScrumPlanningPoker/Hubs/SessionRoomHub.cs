@@ -76,7 +76,7 @@ public class SessionRoomHub : Hub
 
         if (!reveal)
         {
-            sessionRoom.Users.ForEach(u => u.CardValue = 0);
+            sessionRoom.Users.ForEach(u => u.CardValue = null);
             Rooms[roomName] = sessionRoom;
         }
         

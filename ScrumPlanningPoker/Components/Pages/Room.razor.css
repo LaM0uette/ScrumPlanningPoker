@@ -123,16 +123,49 @@
 
 
 
-
-
-
 .users-layout {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    justify-content: start;
+    box-shadow: rgba(9, 30, 66, 0.25) 0 4px 8px -2px, rgba(9, 30, 66, 0.08) 0 0 0 1px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     width: 30%;
     height: 100%;
+    border-radius: 4px;
+}
+
+.users-title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    border-radius: 4px 4px 0 0;
+    width: 100%;
+    height: 60px;
+}
+
+.users-title {
+    color: var(--tiercary-color);
+}
+
+.user-title-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: transparent;
+    width: 100%;
+    height: 60px;
+    box-shadow: 0 2px 2px -2px rgba(9, 30, 66, 0.25);
+}
+
+.user-info {
+    
+}
+
+.user-note {
+    
 }

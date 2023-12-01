@@ -35,4 +35,9 @@ public static class Cards
         { Card.Question, "?" },
         { Card.Coffee, "☕" }
     };
+    
+    public static string GetCardValueString(int? cardValue)
+    {
+        return cardValue == null ? "/" : CardValues[(Card) cardValue];
+    }
 }

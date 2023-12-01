@@ -41,7 +41,7 @@
                             @foreach (var card in Cards.CardValues)
                             {
                                 <button class="card @GetCardCssClass((int) card.Key)" @onclick="() => ClickOnCard((int) card.Key)">
-                                    
+
                                     <p class="card-value-tiny card-value-top">@card.Value</p>
 
                                     <div class="inner-card">
@@ -70,67 +70,35 @@
 
             <div class="users-layout">
 
-            </div>
+                <div class="users-title-container">
+                    <h2 class="subtitle users-title">Users</h2>
+                </div>
 
+                @foreach (var user in Users)
+                {
+                    @if (!user.IsSpectator)
+                    {
+                        <div class="user-title-card">
+
+                            <div class="user-info">
+                                <p>@user.Name</p>
+                            </div>
+
+                            <div class="user-note">
+
+                                @if (CurrentUser.IsSpectator || (CurrentUser.Guid == user.Guid && CurrentUser.Name == user.Name) || CardsIsRevealed)
+                                {
+                                    <p>@Cards.GetCardValueString(user.CardValue)</p>
+                                }
+                                else
+                                {
+                                    <p>@Cards.GetCardValueString(null)</p>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
         </div>
     }
-
 </div>
-
-
-@* <p>Hello, @UserName</p> *@
-
-
-@* <p>All users :</p> *@
-@* @foreach (var user in Users) *@
-@* { *@
-@*     <p>@user.Guid | @user.Name | @user.IsSpectator</p> *@
-@*     @if(CurrentUser.IsSpectator) *@
-@*     { *@
-@*         @if (CurrentUser.Guid != user.Guid || CurrentUser.Name != user.Name) *@
-@*         { *@
-@*             @if (user.CardValue == 0) *@
-@*             { *@
-@*                 <p>?</p> *@
-@*             } *@
-@*             else *@
-@*             { *@
-@*                 <p>@user.CardValue</p> *@
-@*             } *@
-@*         } *@
-@*     } *@
-@*     else if (!CurrentUser.IsSpectator && CurrentUser.Guid == user.Guid && CurrentUser.Name == user.Name) *@
-@*     { *@
-@*         @if (user.CardValue == 0) *@
-@*         { *@
-@*             <p>?</p> *@
-@*         } *@
-@*         else *@
-@*         { *@
-@*             <p>@user.CardValue</p> *@
-@*         } *@
-@*     } *@
-@*     else *@
-@*     { *@
-@*         @if (user.IsSpectator) *@
-@*         { *@
-@*             continue; *@
-@*         } *@
-@*          *@
-@*         @if (CardsIsRevealed) *@
-@*         { *@
-@*             @if (user.CardValue == 0) *@
-@*             { *@
-@*                 <p>?</p> *@
-@*             } *@
-@*             else *@
-@*             { *@
-@*                 <p>@user.CardValue</p> *@
-@*             } *@
-@*         } *@
-@*         else *@
-@*         { *@
-@*             <p>?</p> *@
-@*         } *@
-@*     } *@
-@* } *@

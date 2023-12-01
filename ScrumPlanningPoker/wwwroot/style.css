@@ -16,6 +16,12 @@ body {
     margin-bottom: 20px;
 }
 
+.subtitle {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
 label {
     font-size: 18px;
     color: var(--secondary-color);

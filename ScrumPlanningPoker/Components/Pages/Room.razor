@@ -40,19 +40,11 @@
                         <div class="cards">
                             @foreach (var card in Cards.CardValues)
                             {
-                                
-                                <button class="card" @onclick="() => ClickOnCard((int) card.Key)">
+                                <button class="card @GetCardCssClass((int)card.Key)" @onclick="() => ClickOnCard((int)card.Key)">
                                     <div class="inner-card">
                                         <p>@card.Value</p>
                                     </div>
                                 </button>
-                                
-                                @* <div class="card"> *@
-                                @*     <div class="inner-card"> *@
-                                @*         <button @onclick="() => ClickOnCard((int) card.Key)">@card.Value</button> *@
-                                @*     </div> *@
-                                @* </div> *@
-                                
                             }
                         </div>
                     }

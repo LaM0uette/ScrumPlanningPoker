@@ -69,6 +69,22 @@
     border-radius: 4px;
     box-shadow: rgba(9, 30, 66, 0.25) 0 4px 8px -2px, rgba(9, 30, 66, 0.08) 0 0 0 1px;
 }
+.card p {
+    color: var(--primary-color);
+}
+.card:hover {
+    background-color: var(--primary-color);
+}
+.card:hover p {
+    color: var(--tiercary-color);
+}
+.card-selected {
+    background-color: var(--primary-color);
+}
+.card-selected p {
+    background-color: var(--primary-color);
+    color: var(--tiercary-color);
+}
 .inner-card {
     display: flex;
     flex-direction: column;
@@ -76,13 +92,12 @@
     justify-content: center;
     width: 76%;
     height: 76%; /* 82% */
-    border: 1px solid var(--secondary-color);
+    border: 1px solid #cfd4d7;
     border-radius: 4px;
 }
 .inner-card > p {
     font-size: 3.5em;
     font-weight: normal;
-    color: var(--primary-color);
 }
 
 .users-layout {

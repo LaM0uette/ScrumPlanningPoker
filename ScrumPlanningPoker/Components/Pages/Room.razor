@@ -40,11 +40,19 @@
                         <div class="cards">
                             @foreach (var card in Cards.CardValues)
                             {
-                                <div class="card">
+                                
+                                <button class="card" @onclick="() => ClickOnCard((int) card.Key)">
                                     <div class="inner-card">
-                                        <button @onclick="() => ClickOnCard((int) card.Key)">@card.Value</button>
+                                        <p>@card.Value</p>
                                     </div>
-                                </div>
+                                </button>
+                                
+                                @* <div class="card"> *@
+                                @*     <div class="inner-card"> *@
+                                @*         <button @onclick="() => ClickOnCard((int) card.Key)">@card.Value</button> *@
+                                @*     </div> *@
+                                @* </div> *@
+                                
                             }
                         </div>
                     }

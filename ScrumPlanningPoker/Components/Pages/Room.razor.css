@@ -62,6 +62,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: var(--tiercary-color);
     width: 9vmax;
     height: 12vmax;
     margin: 15px;
@@ -69,19 +70,19 @@
     box-shadow: rgba(9, 30, 66, 0.25) 0 4px 8px -2px, rgba(9, 30, 66, 0.08) 0 0 0 1px;
 }
 .inner-card {
-    width: 70%;
-    height: 78%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 76%;
+    height: 76%; /* 82% */
     border: 1px solid var(--secondary-color);
     border-radius: 4px;
 }
-.inner-card > button {
-    background-color: var(--tiercary-color);
-    color: var(--primary-color);
-    font-size: 4.5em;
+.inner-card > p {
+    font-size: 3.5em;
     font-weight: normal;
-    width: 100%;
-    height: 100%;
-    border-radius: 4px;
+    color: var(--primary-color);
 }
 
 .users-layout {

@@ -5,6 +5,10 @@
     --tiercary-color: #F1F6F8;
 }
 
+body {
+    background-color: var(--tiercary-color);
+}
+
 .title {
     font-size: 36px;
     font-weight: bold;

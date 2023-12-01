@@ -15,7 +15,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     protected bool IsSpectator { get; set; }
     protected bool CardsIsRevealed { get; set; }
     
-    protected int[] CardValues { get; private init; } = { 1, 2, 3, 5, 8, 13, 20, 40, 100 };
+    // protected int[] CardValues { get; private init; } = { 1, 2, 3, 5, 8, 13, 20, 40, 100 };
     protected bool CanChooseCard { get; set; } = true;
     
     protected int UsersCount;

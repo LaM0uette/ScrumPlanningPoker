@@ -1,45 +1,80 @@
 ﻿@page "/room/{RoomName}"
 @attribute [RenderModeInteractiveServer(false)]
+@using ScrumPlanningPoker.Entity.Game
 @inherits RoomBase
 
 <title>Game</title>
 
 <div class="page">
 
-    <div class="container">
-        
-        <h1 class="title">Join game</h1>
+    @if (!RoomIsValid)
+    {
+        <div class="container">
 
-        @if (!RoomIsValid)
-        {
+            <h1 class="title">Join game</h1>
+
+
             <div class="input-container">
                 <label for="username">Enter your name</label>
                 <input class="input-form" id="username" @bind-value="@UserName"/>
             </div>
 
             <div class="toggle-container">
-                <MudSwitch @bind-Checked="@IsSpectator" Color="Color.Warning" />
+                <MudSwitch @bind-Checked="@IsSpectator" Color="Color.Warning"/>
                 <label>Join as spectator</label>
             </div>
 
             <button class="action-button" @onclick="JoinRoom">Join</button>
-        }
-        else
-        {
-            <p>test</p>
-        }
 
-    </div>
+        </div>
+    }
+    else
+    {
+        <div class="horizontal-flex">
+
+            <div class="card-layout">
+                @if (!CurrentUser.IsSpectator)
+                {
+                    @if (!CardsIsRevealed)
+                    {
+                        <div class="cards">
+                            @foreach (var card in Cards.CardValues)
+                            {
+                                <div class="card">
+                                    <div class="inner-card">
+                                        <button @onclick="() => ClickOnCard((int) card.Key)">@card.Value</button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    @if (!CardsIsRevealed)
+                    {
+                        <button @onclick="RevealCards">Reveal cards</button>
+                    }
+                    else
+                    {
+                        <button @onclick="NewGame">Start new game</button>
+                    }
+                }
+            </div>
+
+            <div class="users-layout">
+
+            </div>
+
+        </div>
+    }
 
 </div>
 
 
-
-
-
-
 @* <p>Hello, @UserName</p> *@
-@* *@
+
+
 @* <p>All users :</p> *@
 @* @foreach (var user in Users) *@
 @* { *@
@@ -91,27 +126,5 @@
 @*         { *@
 @*             <p>?</p> *@
 @*         } *@
-@*     } *@
-@* } *@
-@* *@
-@* @if (!CurrentUser.IsSpectator) *@
-@* { *@
-@*     @if (!CardsIsRevealed) *@
-@*     { *@
-@*         @foreach (var cardValue in CardValues) *@
-@*         { *@
-@*             <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button> *@
-@*         } *@
-@*     } *@
-@* } *@
-@* else *@
-@* { *@
-@*     @if (!CardsIsRevealed) *@
-@*     { *@
-@*         <button @onclick="RevealCards">Reveal cards</button> *@
-@*     } *@
-@*     else *@
-@*     { *@
-@*         <button @onclick="NewGame">Start new game</button> *@
 @*     } *@
 @* } *@

@@ -1,6 +1,7 @@
 ﻿:root {
     --primary-color: #c9624c;
     --secondary-color: #4C5B61;
+    --secondary-color-bis: #6e7a86;
     --tiercary-color: #F1F6F8;
 }
 
@@ -11,6 +12,35 @@
     margin-bottom: 20px;
 }
 
+label {
+    font-size: 18px;
+    color: var(--secondary-color);
+    margin-bottom: 2px;
+    text-align: left;
+}
+
+/*Page*/
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: rgba(9, 30, 66, 0.25) 0 4px 8px -2px, rgba(9, 30, 66, 0.08) 0 0 0 1px;
+    width: 25%;
+}
+
+
+/*Components*/
 button {
     padding: 6px;
     border-radius: 5px;
@@ -26,4 +56,10 @@ button {
 
 button:hover {
     opacity: 70%;
+}
+
+.action-button {
+    font-size: 20px;
+    width: 100%;
+    height: 50px;
 }

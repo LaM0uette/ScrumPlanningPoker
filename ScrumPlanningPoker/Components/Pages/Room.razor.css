@@ -1,0 +1,28 @@
+.input-container {
+    width: 100%;
+}
+
+.input-form {
+    padding: 5px;
+    font-size: 20px;
+    width: 100%;
+    height: 40px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 4px;
+    outline: none;
+}
+.input-form:hover {
+    border-color: var(--secondary-color-bis);
+}
+.input-form:focus {
+    border-color: var(--primary-color);
+}
+
+.toggle-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}

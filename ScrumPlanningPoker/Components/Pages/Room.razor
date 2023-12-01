@@ -2,90 +2,116 @@
 @attribute [RenderModeInteractiveServer(false)]
 @inherits RoomBase
 
-<h2>Room: @RoomName</h2>
-<p>Clients count: @UsersCount</p>
+<title>Game</title>
 
-@if (!RoomIsValid)
-{
-    <p>Enter your name</p>
-    <InputText @bind-Value="UserName"/>
-    <InputCheckbox @bind-Value="IsSpectator"/>
-    <button @onclick="JoinRoom">Join</button>
-    return;
-}
+<div class="page">
 
-<p>Hello, @UserName</p>
-
-<p>All users :</p>
-@foreach (var user in Users)
-{
-    <p>@user.Guid | @user.Name | @user.IsSpectator</p>
-    @if(CurrentUser.IsSpectator)
-    {
-        @if (CurrentUser.Guid != user.Guid || CurrentUser.Name != user.Name)
-        {
-            @if (user.CardValue == 0)
-            {
-                <p>?</p>
-            }
-            else
-            {
-                <p>@user.CardValue</p>
-            }
-        }
-    }
-    else if (!CurrentUser.IsSpectator && CurrentUser.Guid == user.Guid && CurrentUser.Name == user.Name)
-    {
-        @if (user.CardValue == 0)
-        {
-            <p>?</p>
-        }
-        else
-        {
-            <p>@user.CardValue</p>
-        }
-    }
-    else
-    {
-        @if (user.IsSpectator)
-            continue;
+    <div class="container">
         
-        @if (CardsIsRevealed)
+        <h1 class="title">Join game</h1>
+
+        @if (!RoomIsValid)
         {
-            @if (user.CardValue == 0)
-            {
-                <p>?</p>
-            }
-            else
-            {
-                <p>@user.CardValue</p>
-            }
+            <div class="input-container">
+                <label for="username">Enter your name</label>
+                <input class="input-form" id="username" @bind-value="@UserName"/>
+            </div>
+
+            <div class="toggle-container">
+                <MudSwitch @bind-Checked="@IsSpectator" Color="Color.Warning" />
+                <label>Join as spectator</label>
+            </div>
+
+            <button class="action-button" @onclick="JoinRoom">Join</button>
         }
         else
         {
-            <p>?</p>
+            <p>test</p>
         }
-    }
-}
 
-@if (!CurrentUser.IsSpectator)
-{
-    @if (!CardsIsRevealed)
-    {
-        @foreach (var cardValue in CardValues)
-        {
-            <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button>
-        }
-    }
-}
-else
-{
-    @if (!CardsIsRevealed)
-    {
-        <button @onclick="RevealCards">Reveal cards</button>
-    }
-    else
-    {
-        <button @onclick="NewGame">Start new game</button>
-    }
-}
+    </div>
+
+</div>
+
+
+
+
+
+
+@* <p>Hello, @UserName</p> *@
+@* *@
+@* <p>All users :</p> *@
+@* @foreach (var user in Users) *@
+@* { *@
+@*     <p>@user.Guid | @user.Name | @user.IsSpectator</p> *@
+@*     @if(CurrentUser.IsSpectator) *@
+@*     { *@
+@*         @if (CurrentUser.Guid != user.Guid || CurrentUser.Name != user.Name) *@
+@*         { *@
+@*             @if (user.CardValue == 0) *@
+@*             { *@
+@*                 <p>?</p> *@
+@*             } *@
+@*             else *@
+@*             { *@
+@*                 <p>@user.CardValue</p> *@
+@*             } *@
+@*         } *@
+@*     } *@
+@*     else if (!CurrentUser.IsSpectator && CurrentUser.Guid == user.Guid && CurrentUser.Name == user.Name) *@
+@*     { *@
+@*         @if (user.CardValue == 0) *@
+@*         { *@
+@*             <p>?</p> *@
+@*         } *@
+@*         else *@
+@*         { *@
+@*             <p>@user.CardValue</p> *@
+@*         } *@
+@*     } *@
+@*     else *@
+@*     { *@
+@*         @if (user.IsSpectator) *@
+@*         { *@
+@*             continue; *@
+@*         } *@
+@*          *@
+@*         @if (CardsIsRevealed) *@
+@*         { *@
+@*             @if (user.CardValue == 0) *@
+@*             { *@
+@*                 <p>?</p> *@
+@*             } *@
+@*             else *@
+@*             { *@
+@*                 <p>@user.CardValue</p> *@
+@*             } *@
+@*         } *@
+@*         else *@
+@*         { *@
+@*             <p>?</p> *@
+@*         } *@
+@*     } *@
+@* } *@
+@* *@
+@* @if (!CurrentUser.IsSpectator) *@
+@* { *@
+@*     @if (!CardsIsRevealed) *@
+@*     { *@
+@*         @foreach (var cardValue in CardValues) *@
+@*         { *@
+@*             <button @onclick="() => ClickOnCard(cardValue)">@cardValue</button> *@
+@*         } *@
+@*     } *@
+@* } *@
+@* else *@
+@* { *@
+@*     @if (!CardsIsRevealed) *@
+@*     { *@
+@*         <button @onclick="RevealCards">Reveal cards</button> *@
+@*     } *@
+@*     else *@
+@*     { *@
+@*         <button @onclick="NewGame">Start new game</button> *@
+@*     } *@
+@* } *@

@@ -33,6 +33,7 @@
         <div class="horizontal-flex">
 
             <div class="card-layout">
+
                 @if (!CurrentUser.IsSpectator)
                 {
                     @if (!CardsIsRevealed)
@@ -68,41 +69,69 @@
                 }
             </div>
 
-            <div class="users-layout">
+            <div class="clients-layout">
+                
+                <div class="users-layout">
 
-                <div class="users-title-container">
-                    <h2 class="subtitle users-title">Users</h2>
-                </div>
+                    <div class="users-title-container">
+                        <h2 class="subtitle users-title">Users</h2>
+                    </div>
 
-                @foreach (var user in Users)
-                {
-                    @if (!user.IsSpectator)
+                    @foreach (var user in Users)
                     {
-                        <div class="user-title-card">
+                        @if (!user.IsSpectator)
+                        {
+                            <div class="user-title-card">
 
-                            <div class="user-info">
-                                
-                                <h3 class="user-name">@user.Name</h3>
+                                <div class="user-info">
 
-                                @if (user.CardValue.HasValue)
-                                {
-                                    <img src="icons/check.png" alt="check"/>
-                                }
+                                    <h3 class="user-name">@user.Name</h3>
 
+                                    @if (user.CardValue.HasValue)
+                                    {
+                                        <img src="icons/check.png" alt="check"/>
+                                    }
+
+                                </div>
+
+                                <div class="user-note">
+
+                                    @if (CardsIsRevealed)
+                                    {
+                                        <p class="user-text">@Cards.GetCardValueString(user.CardValue)</p>
+                                    }
+
+                                </div>
                             </div>
-
-                            <div class="user-note">
-
-                                @if (CardsIsRevealed)
-                                {
-                                    <p class="user-text">@Cards.GetCardValueString(user.CardValue)</p>
-                                }
-                                
-                            </div>
-                        </div>
+                        }
                     }
-                }
+                    
+                </div>
+                
+                <div style="margin-bottom: 25px;"></div>
+
+                <div class="users-layout spectator-layout">
+
+                    <div class="users-title-container">
+                        <h2 class="subtitle users-title">Spectators</h2>
+                    </div>
+
+                    @foreach (var user in Users)
+                    {
+                        @if (user.IsSpectator)
+                        {
+                            <div class="user-title-card">
+                                <div class="user-info">
+                                    <h3 class="user-name">@user.Name</h3>
+                                </div>
+                            </div>
+                        }
+                    }
+                    
+                </div>
+                
             </div>
+            
         </div>
     }
 </div>

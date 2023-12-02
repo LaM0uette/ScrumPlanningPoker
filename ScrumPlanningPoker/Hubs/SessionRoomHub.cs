@@ -35,6 +35,7 @@ public class SessionRoomHub : Hub
         }
 
         sessionRoom.Users.Add(user);
+        sessionRoom = GetSessionRoom(sessionRoom);
         Rooms[roomName] = sessionRoom;
         
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
@@ -50,6 +51,7 @@ public class SessionRoomHub : Hub
             return Task.CompletedTask;
 
         sessionRoom.Users.Remove(userToRemove);
+        sessionRoom = GetSessionRoom(sessionRoom);
         Rooms[roomName] = sessionRoom;
         
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
@@ -69,6 +71,7 @@ public class SessionRoomHub : Hub
             return Task.CompletedTask;
 
         userToUpdate.CardValue = user.CardValue;
+        sessionRoom = GetSessionRoom(sessionRoom);
         Rooms[roomName] = sessionRoom;
         
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
@@ -82,11 +85,23 @@ public class SessionRoomHub : Hub
         if (!reveal)
         {
             sessionRoom.Users.ForEach(u => u.CardValue = null);
+            sessionRoom = GetSessionRoom(sessionRoom);
             Rooms[roomName] = sessionRoom;
+            
         }
         
         await Clients.All.SendAsync("ReceiveRevealCards", sessionRoom, reveal);
         await Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
+    }
+
+    #endregion
+
+    #region Functions
+
+    private static SessionRoom GetSessionRoom(SessionRoom sessionRoom)
+    {
+        sessionRoom.Users = sessionRoom.Users.OrderBy(u => u.Name).ToList();
+        return sessionRoom;
     }
 
     #endregion

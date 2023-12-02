@@ -15,7 +15,6 @@ public class CookieService(IJSRuntime jsRuntime)
 
     public async Task<string?> GetCookie(string cookieName)
     {
-        return null;
         var cookieValue = await jsRuntime.InvokeAsync<string>("getCookie", cookieName);
         return cookieValue;
     }

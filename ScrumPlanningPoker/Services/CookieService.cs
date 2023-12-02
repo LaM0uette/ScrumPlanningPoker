@@ -26,7 +26,11 @@ public class CookieService(IJSRuntime jsRuntime)
 
     public async Task UpdateCookie(string cookieName, string newValue, int days = 36500)
     {
-        await jsRuntime.InvokeVoidAsync("setCookie", cookieName, newValue, days);
+        var cookieValue = await GetCookie(cookieName);
+        if (cookieValue == newValue || cookieValue == null)
+            return;
+        
+        await SetCookie(cookieName, newValue, days);
     }
 
     #endregion

@@ -44,7 +44,6 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         }
 
         await _hubService.InitializeConnectionAsync();
-        await JoinRoom();
     }
 
     private void HandleUserUpdateRoom(SessionRoom room)
@@ -98,7 +97,11 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         var cookieUserName = await _cookieService.GetCookie(CookieService.CookieUserName);
         if (cookieUserName == null)
         {
-            await _cookieService.SetCookie(CookieService.CookieUserName, UserName);
+            await _cookieService.SetCookie(CookieService.CookieUserName, UserName, 14);
+        }
+        else
+        {
+            await _cookieService.UpdateCookie(CookieService.CookieUserName, UserName, 14);
         }
             
         CurrentUser = new User(userGuid, UserName, IsSpectator);

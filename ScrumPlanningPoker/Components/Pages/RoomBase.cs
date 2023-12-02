@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using ScrumPlanningPoker.Entity.RoomHub;
+using ScrumPlanningPoker.Services;
 using ScrumPlanningPoker.Services.HubServices;
 
 namespace ScrumPlanningPoker.Components.Pages;
@@ -16,12 +17,12 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     protected bool CardsIsRevealed { get; set; }
     
     private int? SelectedCardValue { get; set; }
-    protected bool CanChooseCard { get; set; } = true;
+    private bool CanChooseCard { get; set; } = true;
     
-    protected int UsersCount;
-    protected User CurrentUser;
-    protected List<User> Users = new();
+    protected User CurrentUser = null!;
+    protected List<User> Users = [];
     
+    [Inject] private CookieService _cookieService { get; init; } = default!;
     [Inject] private HubService _hubService { get; init; } = default!;
 
     #endregion
@@ -36,6 +37,12 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     protected override async Task OnInitializedAsync()
     {
+        var cookieUserName = await _cookieService.GetCookie(CookieService.CookieUserName);
+        if (cookieUserName != null)
+        {
+            UserName = cookieUserName;
+        }
+
         await _hubService.InitializeConnectionAsync();
         await JoinRoom();
     }
@@ -45,7 +52,6 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         if (RoomName != room.Name)
             return;
                 
-        UsersCount = room.Users.Count;
         Users = room.Users;
 
         InvokeAsync(StateHasChanged);
@@ -60,24 +66,47 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         InvokeAsync(StateHasChanged);
     }
     
-    protected Task JoinRoom()
+    protected async Task JoinRoom()
     {
         if (string.IsNullOrEmpty(UserName) || UserName.Length > 18)
         {
             RoomIsValid = false;
-            return Task.CompletedTask;
+            return;
         }
         
-        CurrentUser = new User(GenerateGuid(), UserName, IsSpectator);
+        await HandleCookie();
         
         RoomIsValid = true;
-        return _hubService.JoinRoomAsync(RoomName, CurrentUser);
+        await _hubService.JoinRoomAsync(RoomName, CurrentUser);
+    }
+
+    private async Task HandleCookie()
+    {
+        string userGuid;
+        
+        var cookieUserGuid = await _cookieService.GetCookie(CookieService.CookieUserGuid);
+        if (cookieUserGuid != null)
+        {
+            userGuid = cookieUserGuid;
+        }
+        else
+        {
+            userGuid = GenerateGuid();
+            await _cookieService.SetCookie(CookieService.CookieUserGuid, userGuid);
+        }
+        
+        var cookieUserName = await _cookieService.GetCookie(CookieService.CookieUserName);
+        if (cookieUserName == null)
+        {
+            await _cookieService.SetCookie(CookieService.CookieUserName, UserName);
+        }
+            
+        CurrentUser = new User(userGuid, UserName, IsSpectator);
     }
     
     private static string GenerateGuid()
     {
-        return "test";
-        //return Guid.NewGuid().ToString("N");
+        return Guid.NewGuid().ToString("N");
     }
     
     protected Task ClickOnCard(int cardValue)

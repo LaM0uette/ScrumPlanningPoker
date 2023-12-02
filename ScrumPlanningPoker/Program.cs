@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using MudBlazor.Services;
 using ScrumPlanningPoker.Components;
 using ScrumPlanningPoker.Hubs;
+using ScrumPlanningPoker.Services;
 using ScrumPlanningPoker.Services.HubServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddResponseCompression(opts =>
 builder.Services.AddServerSideBlazor();
 
 // Singleton
+builder.Services.AddScoped<CookieService>();
 builder.Services.AddScoped<HubService>();
 
 // Components

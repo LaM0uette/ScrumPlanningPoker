@@ -9,7 +9,7 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
     #region Statements
     
     public event Action<SessionRoom>? OnUserUpdateRoom;
-    public event Action<bool>? OnRevealCards;
+    public event Action<SessionRoom, bool>? OnRevealCards;
     
     private HubConnection? _hubConnection;
 
@@ -31,9 +31,9 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
             OnUserUpdateRoom?.Invoke(room);
         });
         
-        _hubConnection.On<bool>("ReceiveRevealCards", (reveal) =>
+        _hubConnection.On<SessionRoom, bool>("ReceiveRevealCards", (room, reveal) =>
         {
-            OnRevealCards?.Invoke(reveal);
+            OnRevealCards?.Invoke(room, reveal);
         });
         
         return _hubConnection.StartAsync();

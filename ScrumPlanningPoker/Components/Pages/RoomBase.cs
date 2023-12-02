@@ -56,8 +56,11 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         InvokeAsync(StateHasChanged);
     }
     
-    private void HandleRevealCards(bool reveal)
+    private void HandleRevealCards(SessionRoom room, bool reveal)
     {
+        if (RoomName != room.Name)
+            return;
+        
         CardsIsRevealed = reveal;
         CanChooseCard = !reveal;
         SelectedCardValue = null;

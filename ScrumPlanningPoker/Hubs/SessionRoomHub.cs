@@ -85,7 +85,7 @@ public class SessionRoomHub : Hub
             Rooms[roomName] = sessionRoom;
         }
         
-        await Clients.All.SendAsync("ReceiveRevealCards", reveal);
+        await Clients.All.SendAsync("ReceiveRevealCards", sessionRoom, reveal);
         await Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
 

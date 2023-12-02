@@ -109,6 +109,11 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     protected string GetCardCssClass(int cardValue)
     {
+        if (SelectedCardValue != cardValue && SelectedCardValue is null)
+        {
+            return "card-unselected";
+        }
+        
         return SelectedCardValue == cardValue ? "card-selected" : "";
     }
     

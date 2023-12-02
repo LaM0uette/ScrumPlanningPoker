@@ -29,6 +29,11 @@ public class SessionRoomHub : Hub
         if (!Rooms.TryGetValue(roomName, out var sessionRoom))
             return Task.CompletedTask;
 
+        if (sessionRoom.Users.Any(u => u.Guid == user.Guid && u.Name == user.Name))
+        {
+            LeaveRoom(roomName, user);
+        }
+
         sessionRoom.Users.Add(user);
         Rooms[roomName] = sessionRoom;
         

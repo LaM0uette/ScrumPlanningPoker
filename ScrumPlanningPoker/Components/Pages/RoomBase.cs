@@ -62,8 +62,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     protected Task JoinRoom()
     {
-        //UserName = "TestTEst";
-        if (string.IsNullOrEmpty(UserName) || UserName.Length > 30)
+        if (string.IsNullOrEmpty(UserName) || UserName.Length > 18)
         {
             RoomIsValid = false;
             return Task.CompletedTask;

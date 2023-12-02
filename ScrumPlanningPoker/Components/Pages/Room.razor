@@ -13,7 +13,6 @@
 
             <h1 class="title">Join game</h1>
 
-
             <div class="input-container">
                 <label for="username">Enter your name</label>
                 <input class="input-form" id="username" @bind-value="@UserName"/>
@@ -34,42 +33,94 @@
 
             <div class="card-layout">
                 
-                @if (CurrentUser.IsSpectator || CardsIsRevealed)
-                {
-                    //
-                }
-                else
-                {
-                    <div class="cards">
-                        @foreach (var card in Cards.CardValues)
-                        {
-                            <button class="card @GetCardCssClass((int) card.Key)" @onclick="() => ClickOnCard((int) card.Key)">
-
-                                <p class="card-value-tiny card-value-top">@card.Value</p>
-
-                                <div class="inner-card">
-                                    <p>@card.Value</p>
-                                </div>
-
-                                <p class="card-value-tiny card-value-bottom">@card.Value</p>
-
-                            </button>
-                        }
-                    </div>
-                }
-
-                @if (CurrentUser.IsSpectator)
-                {
-                    @if (!CardsIsRevealed)
+                    @if (CurrentUser.IsSpectator || CardsIsRevealed)
                     {
-                        <button @onclick="RevealCards">Reveal cards</button>
+                        <div class="spectator-layout">
+                            
+                            <div class="user-cards">
+                                
+                                @{
+                                    var users = Users.Where(u => !u.IsSpectator).ToList();
+                                    var usersCountHasCard = users.Count(u => u.CardValue.HasValue);
+                                    var usersCount = users.Count;
+                                    
+                                    var ienumerable = users.Where(u => u.CardValue.HasValue).Select(u => u.CardValue);
+                                    var usersCardsAverage = Cards.CalculateAverage(ienumerable);
+                                }
+                                
+                                @if (!CardsIsRevealed)
+                                {
+                                    <h2 class="subtitle">@usersCountHasCard / @usersCount</h2>
+                                }
+                                else
+                                {
+                                    <h2 class="subtitle">Average: @usersCardsAverage</h2>
+                                }
+                                
+                                @* @foreach (var user in Users) *@
+                                @* { *@
+                                @*     @if (!user.IsSpectator) *@
+                                @*     { *@
+                                @*         <div class="user-card"> *@
+                                @* *@
+                                @*             <div class="user-info"> *@
+                                @* *@
+                                @*                 <h3 class="user-name">@user.Name</h3> *@
+                                @* *@
+                                @*                 @if (user.CardValue.HasValue) *@
+                                @*                 { *@
+                                @*                     <img src="icons/check.png" alt="check"/> *@
+                                @*                 } *@
+                                @* *@
+                                @*             </div> *@
+                                @* *@
+                                @*             <div class="user-note"> *@
+                                @* *@
+                                @*                 @if (CardsIsRevealed) *@
+                                @*                 { *@
+                                @*                     <p class="user-text">@Cards.GetCardValueString(user.CardValue)</p> *@
+                                @*                 } *@
+                                @* *@
+                                @*             </div> *@
+                                @*         </div> *@
+                                @*     } *@
+                                @* } *@
+                            </div>
+                            
+                            @if (CurrentUser.IsSpectator)
+                            {
+                                @if (!CardsIsRevealed)
+                                {
+                                    <button class="action-button" @onclick="RevealCards">Reveal cards</button>
+                                }
+                                else
+                                {
+                                    <button class="action-button" @onclick="NewGame">Start new game</button>
+                                }
+                            }
+                            
+                        </div>
                     }
                     else
                     {
-                        <button @onclick="NewGame">Start new game</button>
-                    }
-                }
+                        <div class="cards">
+                            @foreach (var card in Cards.CardValues)
+                            {
+                                <button class="card @GetCardCssClass((int) card.Key)" @onclick="() => ClickOnCard((int) card.Key)">
 
+                                    <p class="card-value-tiny card-value-top">@card.Value</p>
+
+                                    <div class="inner-card">
+                                        <p>@card.Value</p>
+                                    </div>
+
+                                    <p class="card-value-tiny card-value-bottom">@card.Value</p>
+
+                                </button>
+                            }
+                        </div>
+                    }
+                
             </div>
 
             <div class="clients-layout">
@@ -113,7 +164,7 @@
                 
                 <div style="margin-bottom: 25px;"></div>
 
-                <div class="users-layout spectator-layout">
+                <div class="users-layout spectator">
 
                     <div class="users-title-container">
                         <h2 class="subtitle users-title">Spectators</h2>

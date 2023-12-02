@@ -40,4 +40,30 @@ public static class Cards
     {
         return cardValue == null ? "/" : CardValues[(Card) cardValue];
     }
+    
+    public static Card? CalculateAverage(IEnumerable<int?> votes)
+    {
+        // Filtrer les votes nuls et convertir les valeurs restantes en type Card
+        var validVotes = votes.Where(v => v.HasValue).Select(v => (Card)v.Value);
+
+        if (!validVotes.Any())
+        {
+            // Retourner null si aucun vote valide n'est présent
+            return null;
+        }
+
+        // Compter la fréquence de chaque vote
+        var frequencyMap = validVotes.GroupBy(v => v)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        // Trouver la fréquence maximale
+        int maxFrequency = frequencyMap.Values.Max();
+
+        // Sélectionner toutes les cartes qui ont la fréquence maximale
+        var candidates = frequencyMap.Where(f => f.Value == maxFrequency)
+            .Select(f => f.Key);
+
+        // Retourner la carte avec la plus grande valeur parmi les candidats
+        return candidates.Max();
+    }
 }

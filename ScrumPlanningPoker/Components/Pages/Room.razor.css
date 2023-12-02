@@ -58,8 +58,8 @@
     padding: 25px;
     border-radius: 4px;
     box-shadow: rgba(9, 30, 66, 0.25) 0 4px 8px -2px, rgba(9, 30, 66, 0.08) 0 0 0 1px;
-    width: 50%;
-    height: 50%;
+    width: 40%;
+    height: 40%;
 }
 
 .user-cards {
@@ -68,25 +68,7 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 0 100px 0 100px;
-}
-.user-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    background-color: transparent;
-    width: 260px;
-    height: 120px;
-    border-radius: 4px;
-    box-shadow: rgba(9, 30, 66, 0.25) 0 4px 8px -2px, rgba(9, 30, 66, 0.08) 0 0 0 1px;
-    margin: 20px;
-}
-
-.user-card .user-info img {
-    margin-left: 10px;
-    max-width: 20%;
-    max-height: 20%;
+    height: 100%;
 }
 
 .cards {
@@ -200,6 +182,7 @@
 
 .users-title {
     color: var(--tiercary-color);
+    text-align: center;
 }
 
 .user-title-card {

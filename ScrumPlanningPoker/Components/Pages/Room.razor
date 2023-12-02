@@ -50,41 +50,13 @@
                                 
                                 @if (!CardsIsRevealed)
                                 {
-                                    <h2 class="subtitle">@usersCountHasCard / @usersCount</h2>
+                                    <h2 class="subtitle">Votes: @usersCountHasCard / @usersCount</h2>
                                 }
                                 else
                                 {
                                     <h2 class="subtitle">Suggested note: @usersCardsAverage</h2>
                                 }
                                 
-                                @* @foreach (var user in Users) *@
-                                @* { *@
-                                @*     @if (!user.IsSpectator) *@
-                                @*     { *@
-                                @*         <div class="user-card"> *@
-                                @* *@
-                                @*             <div class="user-info"> *@
-                                @* *@
-                                @*                 <h3 class="user-name">@user.Name</h3> *@
-                                @* *@
-                                @*                 @if (user.CardValue.HasValue) *@
-                                @*                 { *@
-                                @*                     <img src="icons/check.png" alt="check"/> *@
-                                @*                 } *@
-                                @* *@
-                                @*             </div> *@
-                                @* *@
-                                @*             <div class="user-note"> *@
-                                @* *@
-                                @*                 @if (CardsIsRevealed) *@
-                                @*                 { *@
-                                @*                     <p class="user-text">@Cards.GetCardValueString(user.CardValue)</p> *@
-                                @*                 } *@
-                                @* *@
-                                @*             </div> *@
-                                @*         </div> *@
-                                @*     } *@
-                                @* } *@
                             </div>
                             
                             @if (CurrentUser.IsSpectator)

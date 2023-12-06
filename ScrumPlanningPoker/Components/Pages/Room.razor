@@ -54,6 +54,12 @@
                                 }
                                 else
                                 {
+                                    //var data = ienumerable.Select(x => (double) x).ToArray();
+                                    //var labels = data.Select(x => x.ToString()).ToArray();
+                                    var data = new double[] { 1, 3, 1 };
+                                    var labels = new string[] { "5", "8", "13" };
+                                    <MudChart ChartType="ChartType.Pie" InputData="@data" InputLabels="@labels" Width="140px" Height="140px" />
+                                    
                                     <h2 class="subtitle">Suggested note: @usersCardsAverage</h2>
                                 }
                                 

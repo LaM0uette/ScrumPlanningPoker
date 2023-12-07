@@ -178,4 +178,18 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     }
 
     #endregion
+    
+    protected class Statistics
+    {
+        public string Label { get; set; }
+        public int Occurrence { get; set; }
+        public string Color { get; set; }
+    }
+
+    protected List<Statistics> StatisticsDetails = new List<Statistics>
+    {
+        new Statistics { Label= "5", Occurrence = 1 ,Color="#498fff" },
+        new Statistics { Label= "8", Occurrence = 3 ,Color="#ffa060" },
+        new Statistics { Label= "13", Occurrence = 1 ,Color="#ff68b6" },
+    };
 }

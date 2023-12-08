@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using ScrumPlanningPoker.Entity.RoomHub;
 using ScrumPlanningPoker.Services;
 using ScrumPlanningPoker.Services.HubServices;
@@ -22,6 +23,8 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     protected User CurrentUser = null!;
     protected List<User> Users = [];
     
+    protected readonly ChartOptions PieChartOptions = new();
+    
     [Inject] private CookieService _cookieService { get; init; } = default!;
     [Inject] private HubService _hubService { get; init; } = default!;
 
@@ -33,6 +36,8 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     {
         _hubService.OnUserUpdateRoom += HandleUserUpdateRoom;
         _hubService.OnRevealCards += HandleRevealCards;
+        
+        PieChartOptions.ChartPalette = new []{ "#d99a67", "#ffc107", "#80b577", "#00a9e6", "#3070ba","#494331","#8464a7", "#5e358c", "#446f69", "#28a745", "#dc3545", "#09080b", "#826e45" };
     }
     
     protected override async Task OnInitializedAsync()
@@ -178,18 +183,4 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     }
 
     #endregion
-    
-    protected class Statistics
-    {
-        public string Label { get; set; }
-        public int Occurrence { get; set; }
-        public string Color { get; set; }
-    }
-
-    protected List<Statistics> StatisticsDetails = new List<Statistics>
-    {
-        new Statistics { Label= "5", Occurrence = 1 ,Color="#498fff" },
-        new Statistics { Label= "8", Occurrence = 3 ,Color="#ffa060" },
-        new Statistics { Label= "13", Occurrence = 1 ,Color="#ff68b6" },
-    };
 }

@@ -14,13 +14,14 @@
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
-    border: 1px solid #ccc;
+    border: 1px solid var(--gray-light-color);
     border-radius: 4px 0 0 4px;
     padding: 5px;
     font-size: 20px;
     scrollbar-width: none;
 }
 .scroll-box > p {
+    color: var(--secondary-color);
     margin: 2px 0 0 4px;
 }
 

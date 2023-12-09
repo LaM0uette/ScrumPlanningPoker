@@ -1,8 +1,29 @@
 ﻿:root {
     --primary-color: #d99a67;
     --secondary-color: #4C5B61;
-    --secondary-color-bis: #6e7a86;
     --tiercary-color: #F1F6F8;
+    
+    --gray-light-color: #CCC;
+
+    --shadow: rgba(9, 30, 66, 0.25) 0 4px 8px -2px, rgba(9, 30, 66, 0.08) 0 0 0 1px;
+    --user-shadow: 0 2px 2px -2px rgba(9, 30, 66, 0.25);
+    
+    /* dark */
+    --dark-primary-color: #b9835a;
+    --dark-secondary-color: #444f57;
+    --dark-tiercary-color: #292a2a;
+
+    --dark-shadow: rgba(0, 0, 0, 0.5) 0 4px 8px -2px, rgba(0, 0, 0, 0.2) 0 0 0 1px;
+    --dark-user-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-theme {
+    --primary-color: var(--dark-primary-color);
+    --secondary-color: var(--dark-secondary-color);
+    --tiercary-color: var(--dark-tiercary-color);
+
+    --shadow: var(--dark-shadow);
+    --user-shadow: var(--dark-user-shadow);
 }
 
 body {
@@ -45,7 +66,7 @@ label {
     justify-content: center;
     padding: 25px;
     border-radius: 5px;
-    box-shadow: rgba(9, 30, 66, 0.25) 0 4px 8px -2px, rgba(9, 30, 66, 0.08) 0 0 0 1px;
+    box-shadow: var(--shadow);
     width: 25%;
     min-width: 400px;
 }
@@ -56,12 +77,12 @@ button {
     padding: 6px;
     border-radius: 5px;
     background-color: var(--primary-color);
+    color: var(--tiercary-color);
     border: none;
     outline: none;
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
-    color: var(--tiercary-color);
     transition: all 0.1s ease-in-out;
 }
 

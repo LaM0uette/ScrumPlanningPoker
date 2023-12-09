@@ -33,22 +33,22 @@
         <div class="horizontal-flex">
 
             <div class="card-layout">
-                
+
                 @if (CurrentUser.IsSpectator || CardsIsRevealed)
                 {
                     <div class="spectator-layout">
-                            
+
                         <div class="user-cards">
-                                
+
                             @{
                                 var users = Users.Where(u => !u.IsSpectator).ToList();
                                 var usersCountHasCard = users.Count(u => u.CardValue.HasValue);
                                 var usersCount = users.Count;
-                                
+
                                 var ienumerable = users.Where(u => u.CardValue.HasValue).Select(u => u.CardValue);
                                 var usersCardsAverage = Cards.CalculateAverage(ienumerable);
                             }
-                                
+
                             @if (!CardsIsRevealed)
                             {
                                 <h2 class="subtitle">Votes: @usersCountHasCard / @usersCount</h2>
@@ -56,24 +56,24 @@
                             else
                             {
                                 //ienumerable = new List<int?>() {5, 5, 5, 6, 12, 12};
-                                
+
                                 var grouped = ienumerable.GroupBy(x => x)
-                                    .Select(group => new { Value = group.Key, Count = group.Count() })
+                                    .Select(group => new {Value = group.Key, Count = group.Count()})
                                     .ToList();
-                                
-                                var counts = grouped.Select(g => (double)g.Count).ToArray();
+
+                                var counts = grouped.Select(g => (double) g.Count).ToArray();
                                 var values = grouped.Select(g => Cards.GetCardValueString(g.Value)).ToArray();
-                                
-                                <MudChart ChartType="ChartType.Pie" InputData="@counts" 
-                                          LegendPosition="Position.Right" InputLabels="@values" 
+
+                                <MudChart ChartType="ChartType.Pie" InputData="@counts"
+                                          LegendPosition="Position.Right" InputLabels="@values"
                                           ChartOptions="PieChartOptions"
-                                          Width="200px" Height="200px" />
-                                
+                                          Width="200px" Height="200px"/>
+
                                 <h2 class="subtitle suggested-note">Suggested note: @usersCardsAverage</h2>
                             }
-                                
+
                         </div>
-                            
+
                         @if (CurrentUser.IsSpectator)
                         {
                             @if (!CardsIsRevealed)
@@ -85,7 +85,7 @@
                                 <button class="action-button" @onclick="NewGame">Start new game</button>
                             }
                         }
-                            
+
                     </div>
                 }
                 else
@@ -107,11 +107,11 @@
                         }
                     </div>
                 }
-                
+
             </div>
 
             <div class="clients-layout">
-                
+
                 <div class="users-layout">
 
                     <div class="users-title-container">
@@ -146,9 +146,9 @@
                             </div>
                         }
                     }
-                    
+
                 </div>
-                
+
                 <div style="margin-bottom: 25px;"></div>
 
                 <div class="users-layout spectator">
@@ -168,13 +168,14 @@
                             </div>
                         }
                     }
-                    
+
                 </div>
-                
+
             </div>
-            
+
         </div>
     }
+
 </div>
 
 

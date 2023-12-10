@@ -25,6 +25,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     protected readonly ChartOptions PieChartOptions = new();
     
+    [Inject] public ThemeStateService ThemeState { get; init; } = default!;
     [Inject] private CookieService _cookieService { get; init; } = default!;
     [Inject] private HubService _hubService { get; init; } = default!;
 
@@ -36,6 +37,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     {
         _hubService.OnUserUpdateRoom += HandleUserUpdateRoom;
         _hubService.OnRevealCards += HandleRevealCards;
+        ThemeState.OnChange += StateHasChanged;
         
         PieChartOptions.ChartPalette = new []{ "#d99a67", "#ffc107", "#80b577", "#00a9e6", "#3070ba","#494331","#8464a7", "#5e358c", "#446f69", "#28a745", "#dc3545", "#09080b", "#826e45" };
     }
@@ -171,6 +173,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     {
         _hubService.OnUserUpdateRoom -= HandleUserUpdateRoom;
         _hubService.OnRevealCards -= HandleRevealCards;
+        ThemeState.OnChange -= StateHasChanged;
         
         await LeaveRoom();
         

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using ScrumPlanningPoker.Services;
 using ScrumPlanningPoker.Services.HubServices;
 
 namespace ScrumPlanningPoker.Components.Pages;
 
-public class HomeBase : ComponentBase
+public class HomeBase : ComponentBase, IDisposable
 {
     #region Statements
 
@@ -12,12 +13,23 @@ public class HomeBase : ComponentBase
     
     [Inject] public IJSRuntime JSRuntime { get; init; } = default!;
     [Inject] public NavigationManager NavigationManager { get; init; } = default!;
+    [Inject] public ThemeStateService ThemeState { get; init; } = default!;
     [Inject] private HubService _hubService { get; init; } = default!;
 
     #endregion
 
     #region Functions
-    
+
+    protected override void OnInitialized()
+    {
+        ThemeState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        ThemeState.OnChange -= StateHasChanged;
+        GC.SuppressFinalize(this);
+    }
+
     protected override Task OnInitializedAsync()
     {
         return _hubService.InitializeConnectionAsync();

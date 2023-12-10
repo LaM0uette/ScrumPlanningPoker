@@ -23,6 +23,7 @@ builder.Services.AddServerSideBlazor();
 
 // Singleton
 builder.Services.AddScoped<CookieService>();
+builder.Services.AddScoped<ThemeStateService>();
 builder.Services.AddScoped<HubService>();
 
 // Components

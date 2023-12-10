@@ -1,12 +1,15 @@
 ﻿@page "/room/{RoomName}"
 @attribute [RenderModeInteractiveServer(false)]
 @using ScrumPlanningPoker.Entity.Game
+@using ScrumPlanningPoker.Services
 @using Position = MudBlazor.Position
 @inherits RoomBase
 
 <title>Game</title>
 
-<div class="page">
+<div class="page @ThemeState.CssDarkMode">
+    
+    <ThemeToggle/>
 
     @if (!RoomIsValid)
     {

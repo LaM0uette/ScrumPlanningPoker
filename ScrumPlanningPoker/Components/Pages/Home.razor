@@ -1,10 +1,13 @@
 ﻿@page "/"
 @attribute [RenderModeInteractiveServer(false)]
+@using ScrumPlanningPoker.Services
 @inherits HomeBase
 
 <title>Lobby</title>
 
-<div class="page">
+<div class="page @ThemeState.CssDarkMode">
+    
+    <ThemeToggle/>
 
     <div class="container">
 

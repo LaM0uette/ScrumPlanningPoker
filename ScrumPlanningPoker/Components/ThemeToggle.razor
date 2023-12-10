@@ -1,0 +1,49 @@
+﻿@using ScrumPlanningPoker.Services
+@inject ThemeStateService ThemeState
+
+<button class="dark-theme-button" @onclick="Toggle">
+    @if (ThemeState.DarkMode)
+    {
+        <img src="icons/moon.png" alt="moon"/>
+    }
+    else
+    {
+        <img src="icons/sun.png" alt="sun"/>
+    }
+</button>
+
+<style>
+    
+    .dark-theme-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 60px;
+        height: 60px;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+    .dark-theme-button:hover {
+        opacity: 80%;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+    
+    .dark-theme-button img {
+        max-width: 85%;
+        max-height: 85%;
+    }
+    
+</style>
+
+@code {
+
+    private void Toggle()
+    {
+        ThemeState.DarkMode = !ThemeState.DarkMode;
+        StateHasChanged();
+    }
+
+}

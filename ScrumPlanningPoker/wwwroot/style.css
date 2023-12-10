@@ -17,7 +17,7 @@
     --dark-user-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.35);
 }
 
-body.dark-theme {
+.dark-theme {
     --primary-color: var(--dark-primary-color);
     --secondary-color: var(--dark-secondary-color);
     --tiercary-color: var(--dark-tiercary-color);
@@ -26,7 +26,7 @@ body.dark-theme {
     --user-shadow: var(--dark-user-shadow);
 }
 
-body {
+.page {
     background-color: var(--tiercary-color);
 }
 

@@ -82,12 +82,13 @@ public class SessionRoomHub : Hub
         if (!Rooms.TryGetValue(roomName, out var sessionRoom))
             return;
 
+        sessionRoom.CardsIsRevealed = reveal;
+        
         if (!reveal)
         {
             sessionRoom.Users.ForEach(u => u.CardValue = null);
             sessionRoom = GetSessionRoom(sessionRoom);
             Rooms[roomName] = sessionRoom;
-            
         }
         
         await Clients.All.SendAsync("ReceiveRevealCards", sessionRoom, reveal);

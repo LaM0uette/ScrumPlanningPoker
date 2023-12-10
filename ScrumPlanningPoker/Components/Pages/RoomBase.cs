@@ -57,6 +57,8 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     {
         if (RoomName != room.Name)
             return;
+        
+        CardsIsRevealed = room.CardsIsRevealed;
                 
         Users = room.Users;
 

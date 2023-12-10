@@ -1,4 +1,5 @@
 ﻿@using ScrumPlanningPoker.Services
+@inherits ComponentBase
 @inject ThemeStateService ThemeState
 
 <button class="dark-theme-button" @onclick="Toggle">
@@ -39,6 +40,11 @@
 </style>
 
 @code {
+    
+    protected override Task OnInitializedAsync()
+    {
+        return ThemeState.InitializeDarkMode();
+    }
 
     private async Task Toggle()
     {

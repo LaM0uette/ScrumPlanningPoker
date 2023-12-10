@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
-
-namespace ScrumPlanningPoker.Services;
+﻿namespace ScrumPlanningPoker.Services;
 
 public class ThemeStateService(CookieService cookieService)
 {
     public event Action? OnChange;
 
+    public string CssDarkMode { get; private set; } = "";
+    
     private bool _darkMode;
     public bool DarkMode
     {
@@ -21,15 +21,13 @@ public class ThemeStateService(CookieService cookieService)
             }
         }
     }
-
-    public string CssDarkMode { get; private set; } = "";
     
-    private async void InitializeDarkMode()
+    public async Task InitializeDarkMode()
     {
         var cookieDarkMode = await cookieService.GetCookie(CookieService.CookieDarkMode);
         if (cookieDarkMode != null)
         {
-            DarkMode = cookieDarkMode == "true";
+            DarkMode = cookieDarkMode == "dark-theme";
         }
     }
     

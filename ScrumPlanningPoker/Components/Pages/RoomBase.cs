@@ -39,7 +39,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         _hubService.OnRevealCards += HandleRevealCards;
         ThemeState.OnChange += StateHasChanged;
         
-        PieChartOptions.ChartPalette = new []{ "#d99a67", "#ffc107", "#80b577", "#00a9e6", "#3070ba","#494331","#8464a7", "#5e358c", "#446f69", "#28a745", "#dc3545", "#09080b", "#826e45" };
+        PieChartOptions.ChartPalette = new []{ "#80b577", "#00a9e6", "#3070ba","#494331","#8464a7", "#5e358c", "#446f69", "#28a745", "#dc3545", "#09080b", "#826e45", "#d99a67", "#ffc107" };
     }
     
     protected override async Task OnInitializedAsync()

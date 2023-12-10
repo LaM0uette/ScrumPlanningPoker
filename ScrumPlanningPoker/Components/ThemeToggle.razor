@@ -40,9 +40,9 @@
 
 @code {
 
-    private void Toggle()
+    private async Task Toggle()
     {
-        ThemeState.DarkMode = !ThemeState.DarkMode;
+        await ThemeState.ToggleDarkMode();
         StateHasChanged();
     }
 

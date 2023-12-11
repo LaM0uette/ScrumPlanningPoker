@@ -39,6 +39,14 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
         return _hubConnection.StartAsync();
     }
 
+    public Task CheckRoomExistsAsync(string roomName)
+    {
+        if (_hubConnection?.State != HubConnectionState.Connected) 
+            return Task.CompletedTask;
+        
+        return _hubConnection.SendAsync("CheckRoomExists", roomName);
+    }
+    
     public Task CreateRoomAsync(string roomName)
     {
         if (_hubConnection?.State != HubConnectionState.Connected) 

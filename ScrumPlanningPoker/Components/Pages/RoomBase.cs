@@ -51,6 +51,12 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         }
 
         await _hubService.InitializeConnectionAsync();
+        await CheckRoomExists();
+    }
+    
+    private Task CheckRoomExists()
+    {
+        return _hubService.CheckRoomExistsAsync(RoomName);
     }
 
     private void HandleUserUpdateRoom(SessionRoom room)

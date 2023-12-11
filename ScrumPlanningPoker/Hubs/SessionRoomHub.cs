@@ -12,6 +12,14 @@ public class SessionRoomHub : Hub
     #endregion
 
     #region RoomCreation
+    
+    public void CheckRoomExists(string roomName)
+    {
+        if (!Rooms.ContainsKey(roomName))
+        {
+            CreateRoom(roomName);
+        }
+    }
 
     public void CreateRoom(string roomName)
     {

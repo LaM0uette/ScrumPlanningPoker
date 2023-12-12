@@ -16,12 +16,12 @@
 
             <h1 class="title">Join game</h1>
 
-            <div class="input-container">
+            <div class="user-form_input-container">
                 <label for="username">Enter your name</label>
-                <input class="input-form" id="username" @bind-value="@UserName"/>
+                <input class="user-form_input-container--input" id="username" @bind-value="@UserName"/>
             </div>
 
-            <div class="toggle-container">
+            <div class="user-form_toggle-container">
                 <MudSwitch @bind-Checked="@IsSpectator" Color="Color.Warning"/>
                 <label>Join as spectator</label>
             </div>
@@ -32,16 +32,15 @@
     }
     else
     {
-        <div class="horizontal-flex">
+        <div class="main-layout_horizontal-flex">
 
-            <div class="card-layout">
+            <div class="card-layout_container">
 
                 @if (CurrentUser.IsSpectator || CardsIsRevealed)
                 {
                     <div class="spectator-layout">
 
-                        <div class="user-cards">
-
+                        <div class="spectator-layout_user">
                             @{
                                 var users = Users.Where(u => !u.IsSpectator).ToList();
                                 var usersCountHasCard = users.Count(u => u.CardValue.HasValue);
@@ -71,9 +70,8 @@
                                           ChartOptions="PieChartOptions"
                                           Width="200px" Height="200px"/>
 
-                                <h2 class="subtitle suggested-note">Suggested note: @usersCardsAverage</h2>
+                                <h2 class="subtitle spectator-layout_suggested-note">Suggested note: @usersCardsAverage</h2>
                             }
-
                         </div>
 
                         @if (CurrentUser.IsSpectator)
@@ -92,18 +90,18 @@
                 }
                 else
                 {
-                    <div class="cards">
+                    <div class="card-layout_cards">
                         @foreach (var card in Cards.CardValues)
                         {
-                            <button class="card @GetCardCssClass((int) card.Key)" @onclick="() => ClickOnCard((int) card.Key)">
+                            <button class="card-layout_cards--card @GetCardCssClass((int) card.Key)" @onclick="() => ClickOnCard((int) card.Key)">
 
-                                <p class="card-value-tiny card-value-top">@card.Value</p>
+                                <p class="card-layout_cards--tiny-card tiny-card-value-top">@card.Value</p>
 
-                                <div class="inner-card">
+                                <div class="card-layout_inner-card">
                                     <p>@card.Value</p>
                                 </div>
 
-                                <p class="card-value-tiny card-value-bottom">@card.Value</p>
+                                <p class="card-layout_cards--tiny-card tiny-card-value-bottom">@card.Value</p>
 
                             </button>
                         }
@@ -114,21 +112,21 @@
 
             <div class="clients-layout">
 
-                <div class="users-layout">
+                <div class="clients-layout_users-list">
 
-                    <div class="users-title-container">
-                        <h2 class="subtitle users-title">Users</h2>
+                    <div class="clients-layout_users-title-container">
+                        <h2 class="subtitle clients-layout_users-title">Users</h2>
                     </div>
 
                     @foreach (var user in Users)
                     {
                         @if (!user.IsSpectator)
                         {
-                            <div class="user-title-card">
+                            <div class="clients-layout_user-title-card">
 
-                                <div class="user-info">
+                                <div class="user-title-card_info">
 
-                                    <h3 class="user-name">@user.Name</h3>
+                                    <h3 class="user-title-card_name">@user.Name</h3>
 
                                     @if (user.CardValue.HasValue)
                                     {
@@ -137,11 +135,11 @@
 
                                 </div>
 
-                                <div class="user-note">
+                                <div class="clients-layout_user-note">
 
                                     @if (CardsIsRevealed)
                                     {
-                                        <p class="user-text">@Cards.GetCardValueString(user.CardValue)</p>
+                                        <p class="user-note_text">@Cards.GetCardValueString(user.CardValue)</p>
                                     }
 
                                 </div>
@@ -153,19 +151,19 @@
 
                 <div style="margin-bottom: 25px;"></div>
 
-                <div class="users-layout spectator">
+                <div class="clients-layout_users-list spectator-list">
 
-                    <div class="users-title-container">
-                        <h2 class="subtitle users-title">Spectators</h2>
+                    <div class="clients-layout_users-title-container">
+                        <h2 class="subtitle clients-layout_users-title">Spectators</h2>
                     </div>
 
                     @foreach (var user in Users)
                     {
                         @if (user.IsSpectator)
                         {
-                            <div class="user-title-card">
-                                <div class="user-info">
-                                    <h3 class="user-name">@user.Name</h3>
+                            <div class="clients-layout_user-title-card">
+                                <div class="user-title-card_info">
+                                    <h3 class="user-title-card_name">@user.Name</h3>
                                 </div>
                             </div>
                         }
@@ -179,7 +177,6 @@
     }
 
 </div>
-
 
 <style>
 

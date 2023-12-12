@@ -84,7 +84,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: var(--tiercary-color);
+    background-color: var(--tertiary-color);
     width: 9vmax;
     height: 12vmax;
     margin: 18px;
@@ -104,14 +104,14 @@
     cursor: pointer;
 }
 .card-unselected:hover p {
-    color: var(--tiercary-color);
+    color: var(--tertiary-color);
 }
 .card-selected {
     background-color: var(--primary-color);
 }
 .card-selected p {
     background-color: var(--primary-color);
-    color: var(--tiercary-color);
+    color: var(--tertiary-color);
 }
 .inner-card {
     display: flex;
@@ -192,7 +192,7 @@
 }
 
 .users-title {
-    color: var(--tiercary-color);
+    color: var(--tertiary-color);
     text-align: center;
 }
 

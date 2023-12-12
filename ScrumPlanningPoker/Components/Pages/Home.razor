@@ -14,17 +14,17 @@
 
         @if (!string.IsNullOrEmpty(RoomLink))
         {
-            <div class="link-container">
+            <div class="room-link_container">
 
-                <div class="scroll-box">
+                <div class="room-link_container--scroll-box">
                     <p>@RoomLink</p>
                 </div>
 
-                <button class="room-link-button" @onclick="CopyRoomLink">
+                <button class="room-link_container--button" @onclick="CopyRoomLink">
                     <img src="icons/copy.png" alt="copy"/>
                 </button>
 
-                <button class="room-link-button goto-link" @onclick="GoToRoomLink">
+                <button class="room-link_container--button goto-link" @onclick="GoToRoomLink">
                     <img src="icons/arrow.png" alt="arrow"/>
                 </button>
 

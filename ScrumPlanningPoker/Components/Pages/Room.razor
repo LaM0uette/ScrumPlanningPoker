@@ -1,7 +1,7 @@
 ﻿@page "/room/{RoomName}"
 @attribute [RenderModeInteractiveServer(false)]
-@using ScrumPlanningPoker.Entity.Game
 @using Position = MudBlazor.Position
+@using ScrumPlanningPoker.Entity.Cards
 @inherits RoomBase
 
 <title>Planning Poker - Room</title>
@@ -47,7 +47,7 @@
                                 var usersCount = users.Count;
 
                                 var ienumerable = users.Where(u => u.CardValue.HasValue).Select(u => u.CardValue);
-                                var usersCardsAverage = Cards.CalculateAverage(ienumerable);
+                                var usersCardsAverage = Card.CalculateAverage(ienumerable);
                             }
 
                             @if (!CardsIsRevealed)
@@ -63,7 +63,7 @@
                                     .ToList();
 
                                 var counts = grouped.Select(g => (double) g.Count).ToArray();
-                                var values = grouped.Select(g => Cards.GetCardValueString(g.Value)).ToArray();
+                                var values = grouped.Select(g => Card.GetCardValueString(g.Value)).ToArray();
 
                                 <MudChart ChartType="ChartType.Pie" InputData="@counts"
                                           LegendPosition="Position.Right" InputLabels="@values"
@@ -91,7 +91,7 @@
                 else
                 {
                     <div class="card-layout_cards">
-                        @foreach (var card in Cards.CardValues)
+                        @foreach (var card in Card.Cards)
                         {
                             <button class="card-layout_cards--card @GetCardCssClass((int) card.Key)" @onclick="() => ClickOnCard((int) card.Key)">
 
@@ -139,7 +139,7 @@
 
                                     @if (CardsIsRevealed)
                                     {
-                                        <p class="user-note_text">@Cards.GetCardValueString(user.CardValue)</p>
+                                        <p class="user-note_text">@Card.GetCardValueString(user.CardValue)</p>
                                     }
 
                                 </div>

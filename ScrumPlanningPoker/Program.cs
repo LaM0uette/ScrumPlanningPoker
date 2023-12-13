@@ -7,6 +7,7 @@ using ScrumPlanningPoker.Services.HubServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -17,16 +18,22 @@ builder.Services.AddResponseCompression(opts =>
         new[] { "application/octet-stream" });
 });
 
+
+// Blazor
 builder.Services.AddServerSideBlazor();
+
 
 // Singleton
 builder.Services.AddScoped<CookieService>();
 builder.Services.AddScoped<ThemeStateService>();
 builder.Services.AddScoped<HubService>();
 
+
 // Components
 builder.Services.AddMudServices();
 
+
+// Build
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,7 +51,9 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+
 // SignalR
 app.MapHub<SessionRoomHub>("/session-room-hub");
+
 
 app.Run();

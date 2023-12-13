@@ -41,32 +41,40 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
 
     public Task CheckRoomExistsAsync(string roomName)
     {
-        if (_hubConnection?.State != HubConnectionState.Connected) 
+        if (_hubConnection?.State != HubConnectionState.Connected)
+        {
             return Task.CompletedTask;
+        }
         
         return _hubConnection.SendAsync("CheckRoomExists", roomName);
     }
     
     public Task CreateRoomAsync(string roomName)
     {
-        if (_hubConnection?.State != HubConnectionState.Connected) 
+        if (_hubConnection?.State != HubConnectionState.Connected)
+        {
             return Task.CompletedTask;
+        }
         
         return _hubConnection.SendAsync("CreateRoom", roomName);
     }
 
     public Task JoinRoomAsync(string roomName, User user)
     {
-        if (_hubConnection?.State != HubConnectionState.Connected) 
+        if (_hubConnection?.State != HubConnectionState.Connected)
+        {
             return Task.CompletedTask;
+        }
         
         return _hubConnection.SendAsync("JoinRoom", roomName, user);
     }
 
     public Task LeaveRoomAsync(string roomName, User user)
     {
-        if (_hubConnection?.State != HubConnectionState.Connected) 
+        if (_hubConnection?.State != HubConnectionState.Connected)
+        {
             return Task.CompletedTask;
+        }
         
         return _hubConnection.SendAsync("LeaveRoom", roomName, user);
     }
@@ -88,16 +96,20 @@ public class HubService(NavigationManager navigationManager) : IHubService, IRoo
 
     public Task ClickOnCardAsync(string roomName, User user)
     {
-        if (_hubConnection?.State != HubConnectionState.Connected) 
+        if (_hubConnection?.State != HubConnectionState.Connected)
+        {
             return Task.CompletedTask;
+        }
         
         return _hubConnection.SendAsync("ClickOnCard", roomName, user);
     }
     
     public Task RevealCardsAsync(string roomName, bool reveal)
     {
-        if (_hubConnection?.State != HubConnectionState.Connected) 
+        if (_hubConnection?.State != HubConnectionState.Connected)
+        {
             return Task.CompletedTask;
+        }
         
         return _hubConnection.SendAsync("RevealCards", roomName, reveal);
     }

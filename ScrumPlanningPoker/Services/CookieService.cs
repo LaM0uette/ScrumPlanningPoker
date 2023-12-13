@@ -6,9 +6,9 @@ public class CookieService(IJSRuntime jsRuntime)
 {
     #region Statements
 
-    public static string CookieUserGuid { get; set; } = "CookieUserGuid";
-    public static string CookieUserName { get; set; } = "CookieUserName";
-    public static string CookieDarkMode { get; set; } = "CookieDarkMode";
+    public static string CookieUserGuid => "CookieUserGuid";
+    public static string CookieUserName => "CookieUserName";
+    public static string CookieDarkMode => "CookieDarkMode";
 
     #endregion
     
@@ -29,7 +29,9 @@ public class CookieService(IJSRuntime jsRuntime)
     {
         var cookieValue = await GetCookie(cookieName);
         if (cookieValue == newValue || cookieValue == null)
+        {
             return;
+        }
         
         await SetCookie(cookieName, newValue, days);
     }

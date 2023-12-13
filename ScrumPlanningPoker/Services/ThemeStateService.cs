@@ -2,26 +2,34 @@
 
 public class ThemeStateService(CookieService cookieService)
 {
-    public event Action? OnChange;
+    #region Statements
 
-    public string CssDarkMode { get; private set; } = "";
+    public string ClassCss { get; private set; } = "";
+    
+    public event Action? OnChange;
     
     private bool _darkMode;
     public bool DarkMode
     {
         get => _darkMode;
-        set
+        private set
         {
-            if (_darkMode != value)
+            if (_darkMode == value)
             {
-                _darkMode = value;
-                CssDarkMode = _darkMode ? "dark-theme" : "";
-                
-                NotifyStateChanged();
+                return;
             }
+            
+            _darkMode = value;
+            ClassCss = _darkMode ? "dark-theme" : "";
+                
+            NotifyStateChanged();
         }
     }
-    
+
+    #endregion
+
+    #region Functions
+
     public async Task InitializeDarkMode()
     {
         var cookieDarkMode = await cookieService.GetCookie(CookieService.CookieDarkMode);
@@ -38,11 +46,16 @@ public class ThemeStateService(CookieService cookieService)
         var cookieDarkMode = await cookieService.GetCookie(CookieService.CookieDarkMode);
         if (cookieDarkMode != null)
         {
-            await cookieService.UpdateCookie(CookieService.CookieDarkMode, CssDarkMode);
+            await cookieService.UpdateCookie(CookieService.CookieDarkMode, ClassCss);
         }
         
-        await cookieService.SetCookie(CookieService.CookieDarkMode, CssDarkMode);
+        await cookieService.SetCookie(CookieService.CookieDarkMode, ClassCss);
     }
 
-    private void NotifyStateChanged() => OnChange?.Invoke();
+    private void NotifyStateChanged()
+    {
+        OnChange?.Invoke();
+    }
+
+    #endregion
 }

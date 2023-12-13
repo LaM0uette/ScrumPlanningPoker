@@ -15,7 +15,7 @@
     --dark-secondary-color: #a2a6a9;
     --dark-tertiary-color: #373838;
 
-    --dark-shadow: rgba(0, 0, 0, 0.5) 0 4px 8px -2px, rgba(0, 0, 0, 0.2) 0 0 0 1px;
+    --dark-shadow: rgba(40, 40, 40, 0.5) 0 4px 8px -2px, rgba(25, 25, 25, 0.3) 0 0 0 1px;
     --dark-user-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.35);
 
     

@@ -18,7 +18,6 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     protected bool CardsIsRevealed { get; set; }
     
     private int? SelectedCardValue { get; set; }
-    private bool CanChooseCard { get; set; } = true;
     
     protected User CurrentUser = null!;
     protected List<User> Users = [];
@@ -77,7 +76,6 @@ public class RoomBase : ComponentBase, IAsyncDisposable
             return;
         
         CardsIsRevealed = reveal;
-        CanChooseCard = !reveal;
         SelectedCardValue = null;
         
         InvokeAsync(StateHasChanged);
@@ -132,14 +130,12 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     protected Task ClickOnCard(int cardValue)
     {
-        if (!CanChooseCard) 
+        if (cardValue == CurrentUser.CardValue)
             return Task.CompletedTask;
         
         CurrentUser.CardValue = cardValue;
-        
         ToggleCardSelection(cardValue);
         
-        CanChooseCard = false;
         return _hubService.ClickOnCardAsync(RoomName, CurrentUser);
     }
     
@@ -159,11 +155,6 @@ public class RoomBase : ComponentBase, IAsyncDisposable
     
     protected string GetCardCssClass(int cardValue)
     {
-        if (SelectedCardValue != cardValue && SelectedCardValue is null)
-        {
-            return "card-unselected";
-        }
-        
         return SelectedCardValue == cardValue ? "card-selected" : "";
     }
     

@@ -110,20 +110,19 @@
     color: var(--primary-color);
 }
 .card-layout_cards--card:hover {
-    cursor: not-allowed;
-    opacity: 100%;
-}
-
-.card-unselected:hover {
     background-color: var(--primary-color);
-    opacity: 70%;
+    opacity: 100%;
     cursor: pointer;
 }
-.card-unselected:hover p {
+.card-layout_cards--card:hover p {
     color: var(--tertiary-color);
 }
+
 .card-selected {
     background-color: var(--primary-color);
+}
+.card-selected:hover {
+    opacity: 100%;
 }
 .card-selected p {
     background-color: var(--primary-color);

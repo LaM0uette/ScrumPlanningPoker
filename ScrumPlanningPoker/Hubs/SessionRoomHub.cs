@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using ScrumPlanningPoker.Entity.RoomHub;
+using ScrumPlanningPoker.Utils.Extensions;
 
 namespace ScrumPlanningPoker.Hubs;
 
@@ -24,7 +25,6 @@ public class SessionRoomHub : Hub
     public void CreateRoom(string roomName)
     {
         var sessionRoom = new SessionRoom(roomName);
-        
         Rooms.Add(roomName, sessionRoom);
     }
 
@@ -34,34 +34,43 @@ public class SessionRoomHub : Hub
 
     public Task JoinRoom(string roomName, User user)
     {
-        if (!Rooms.TryGetValue(roomName, out var sessionRoom))
+        var sessionRoom = GetSessionRoom(roomName);
+        if (sessionRoom is null)
+        {
             return Task.CompletedTask;
+        }
 
-        if (sessionRoom.Users.Any(u => u.Guid == user.Guid && u.Name == user.Name))
+        var userInSessionRoom = GetUserInSessionRoom(user, sessionRoom);
+        if (userInSessionRoom is not null)
         {
             LeaveRoom(roomName, user);
         }
 
         sessionRoom.Users.Add(user);
-        sessionRoom = GetSessionRoom(sessionRoom);
-        Rooms[roomName] = sessionRoom;
+        sessionRoom.SortUsers();
         
+        Rooms[roomName] = sessionRoom;
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
-    
+
     public Task LeaveRoom(string roomName, User user)
     {
-        if (!Rooms.TryGetValue(roomName, out var sessionRoom))
+        var sessionRoom = GetSessionRoom(roomName);
+        if (sessionRoom is null)
+        {
             return Task.CompletedTask;
+        }
         
-        var userToRemove = sessionRoom.Users.FirstOrDefault(u => u.Guid == user.Guid && u.Name == user.Name);
+        var userToRemove = GetUserInSessionRoom(user, sessionRoom);
         if (userToRemove == null)
+        {
             return Task.CompletedTask;
+        }
 
         sessionRoom.Users.Remove(userToRemove);
-        sessionRoom = GetSessionRoom(sessionRoom);
-        Rooms[roomName] = sessionRoom;
+        sessionRoom.SortUsers();
         
+        Rooms[roomName] = sessionRoom;
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
 
@@ -71,33 +80,42 @@ public class SessionRoomHub : Hub
 
     public Task ClickOnCard(string roomName, User user)
     {
-        if (!Rooms.TryGetValue(roomName, out var sessionRoom))
+        var sessionRoom = GetSessionRoom(roomName);
+        if (sessionRoom is null)
+        {
             return Task.CompletedTask;
+        }
         
-        var userToUpdate = sessionRoom.Users.FirstOrDefault(u => u.Guid == user.Guid && u.Name == user.Name);
+        var userToUpdate = GetUserInSessionRoom(user, sessionRoom);
         if (userToUpdate == null)
+        {
             return Task.CompletedTask;
+        }
 
         userToUpdate.CardValue = user.CardValue;
-        sessionRoom = GetSessionRoom(sessionRoom);
-        Rooms[roomName] = sessionRoom;
+        sessionRoom.SortUsers();
         
+        Rooms[roomName] = sessionRoom;
         return Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
     }
     
     public async Task RevealCards(string roomName, bool reveal)
     {
-        if (!Rooms.TryGetValue(roomName, out var sessionRoom))
+        var sessionRoom = GetSessionRoom(roomName);
+        if (sessionRoom is null)
+        {
             return;
+        }
 
         sessionRoom.CardsIsRevealed = reveal;
         
         if (!reveal)
         {
             sessionRoom.Users.ForEach(u => u.CardValue = null);
-            sessionRoom = GetSessionRoom(sessionRoom);
-            Rooms[roomName] = sessionRoom;
         }
+        
+        sessionRoom.SortUsers();
+        Rooms[roomName] = sessionRoom;
         
         await Clients.All.SendAsync("ReceiveRevealCards", sessionRoom, reveal);
         await Clients.All.SendAsync("ReceiveUserUpdateRoom", sessionRoom);
@@ -106,11 +124,22 @@ public class SessionRoomHub : Hub
     #endregion
 
     #region Functions
-
-    private static SessionRoom GetSessionRoom(SessionRoom sessionRoom)
+    
+    private static SessionRoom? GetSessionRoom(string roomName)
     {
-        sessionRoom.Users = sessionRoom.Users.OrderBy(u => u.Name).ToList();
+        _ = !Rooms.TryGetValue(roomName, out var sessionRoom);
         return sessionRoom;
+    }
+    
+    private static User? GetUserInSessionRoom(User user, SessionRoom sessionRoom)
+    {
+        foreach (var userInSessionRoom in sessionRoom.Users)
+        {
+            if (userInSessionRoom.Guid == user.Guid && userInSessionRoom.Name == user.Name) 
+                return userInSessionRoom;
+        }
+
+        return null;
     }
 
     #endregion

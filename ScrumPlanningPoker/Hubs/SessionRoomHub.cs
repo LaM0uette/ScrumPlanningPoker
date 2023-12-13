@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using ScrumPlanningPoker.Entity.RoomHub;
+using ScrumPlanningPoker.Entity.Room;
 using ScrumPlanningPoker.Utils.Extensions;
 
 namespace ScrumPlanningPoker.Hubs;

@@ -1,4 +1,4 @@
-﻿using ScrumPlanningPoker.Entity.RoomHub;
+﻿using ScrumPlanningPoker.Entity.Room;
 
 namespace ScrumPlanningPoker.Services.HubServices;
 

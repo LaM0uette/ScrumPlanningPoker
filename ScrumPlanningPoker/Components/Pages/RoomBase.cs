@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using ScrumPlanningPoker.Entity.RoomHub;
+using ScrumPlanningPoker.Entity.Room;
 using ScrumPlanningPoker.Services;
 using ScrumPlanningPoker.Services.HubServices;
 

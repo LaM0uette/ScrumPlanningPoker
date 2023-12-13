@@ -1,4 +1,4 @@
-﻿namespace ScrumPlanningPoker.Entity.RoomHub;
+﻿namespace ScrumPlanningPoker.Entity.Room;
 
 public class User(string guid, string name, bool isSpectator)
 {

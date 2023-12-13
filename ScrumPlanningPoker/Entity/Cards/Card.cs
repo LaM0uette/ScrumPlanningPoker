@@ -37,7 +37,7 @@ public static class Card
     
     public static string CalculateAverage(IEnumerable<int?> votes)
     {
-        var validVotes = votes.Where(v => v.HasValue).Select(v => (CardType)v!.Value);
+        var validVotes = votes.Where(v => v is < 11).Select(v => (CardType)v!.Value);
 
         var cards = validVotes as CardType[] ?? validVotes.ToArray();
         if (cards.Length == 0)

@@ -114,11 +114,11 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         var cookieUserName = await _cookieService.GetCookie(CookieService.CookieUserName);
         if (cookieUserName == null)
         {
-            await _cookieService.SetCookie(CookieService.CookieUserName, UserName, 14);
+            await _cookieService.SetCookie(CookieService.CookieUserName, UserName, 30);
         }
         else
         {
-            await _cookieService.UpdateCookie(CookieService.CookieUserName, UserName, 14);
+            await _cookieService.UpdateCookie(CookieService.CookieUserName, UserName, 30);
         }
             
         CurrentUser = new User(userGuid, UserName, IsSpectator);

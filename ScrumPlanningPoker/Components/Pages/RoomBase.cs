@@ -77,6 +77,7 @@ public class RoomBase : ComponentBase, IAsyncDisposable
         
         CardsIsRevealed = reveal;
         SelectedCardValue = null;
+        CurrentUser.CardValue = null;
         
         InvokeAsync(StateHasChanged);
     }

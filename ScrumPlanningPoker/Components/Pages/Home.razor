@@ -1,5 +1,5 @@
 ﻿@page "/"
-@attribute [RenderModeInteractiveServer(false)]
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @inherits HomeBase
 
 <title>Planning Poker</title>

@@ -1,5 +1,5 @@
 ﻿@page "/room/{RoomName}"
-@attribute [RenderModeInteractiveServer(false)]
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @using Position = MudBlazor.Position
 @using ScrumPlanningPoker.Entity.Cards
 @inherits RoomBase

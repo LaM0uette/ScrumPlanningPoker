@@ -68,7 +68,33 @@
                                 <MudChart ChartType="ChartType.Pie" InputData="@counts"
                                           LegendPosition="Position.Right" InputLabels="@values"
                                           ChartOptions="PieChartOptions"
-                                          Width="200px" Height="200px"/>
+                                          Width="200px" Height="200px">
+                                    
+                                    <CustomGraphics>
+                                        <style>
+                                        
+                                            .mud-chart-legend-item {
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                            }
+                                        
+                                            .mud-typography-display-inline {
+                                                color: var(--secondary-color);
+                                                font-size: 2em;
+                                                font-weight: bold;
+                                            }
+                                            
+                                            .mud-chart-legend-marker {
+                                                height: 20px;
+                                                width: 20px;
+                                                margin: 0 4px 0 15px;
+                                            }
+                                            
+                                        </style>
+                                    </CustomGraphics>
+                                    
+                                </MudChart>
 
                                 <h2 class="subtitle spectator-layout_suggested-note">Suggested note: @usersCardsAverage</h2>
                             }
@@ -177,25 +203,3 @@
     }
 
 </div>
-
-<style>
-
-    .mud-chart-legend-item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .mud-typography-display-inline {
-        color: var(--secondary-color);
-        font-size: 2em;
-        font-weight: bold;
-    }
-    
-    .mud-chart-legend-marker {
-        height: 20px;
-        width: 20px;
-        margin: 0 4px 0 15px;
-    }
-    
-</style>
